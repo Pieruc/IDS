@@ -3,8 +3,9 @@ package ids.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Turista")
-public class Turista {
+@Table(name = "Contributor")
+public class Contributor {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -15,10 +16,10 @@ public class Turista {
     @Column(name="Password")
     private String password;
 
-    public Turista(){
+    public Contributor(){
 
     }
-    public Turista(String n, String e,String p){
+    public Contributor(String n, String e,String p){
         nome=n;
         email=e;
         password=p;
@@ -58,7 +59,7 @@ public class Turista {
 
     @Override
     public String toString() {
-        return "Turista{" +
+        return "Contributor{" +
                 "id=" + id +
                 ", nome='" + nome + '\'' +
                 ", email='" + email + '\'' +
@@ -66,11 +67,7 @@ public class Turista {
                 '}';
     }
 
-    public void creaItinerario() {
-
-    }
-
-    public boolean segnalaContenuto() {
+    public boolean caricaContenuto() {
         return true;
     }
 

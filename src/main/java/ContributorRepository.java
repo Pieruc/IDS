@@ -1,39 +1,40 @@
-import ids.model.Turista;
+import ids.model.Contributor;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
-public class TuristaRepository {
+public class ContributorRepository {
+
     private EntityManager entityManager;
     private EntityManagerFactory emf;
 
-    public TuristaRepository(){
+    public ContributorRepository(){
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("ids.pu");
         this.entityManager = emf.createEntityManager();
     }
 
-    public void addTurista(Turista t){
+    public void addContributor(Contributor c){
         entityManager.getTransaction().begin();
-        entityManager.persist(t);
+        entityManager.persist(c);
         entityManager.getTransaction().commit();
     }
 
-    public Turista findTurista(Long id){
-        return entityManager.find(Turista.class,id);
+    public Contributor findContributor(Long id){
+        return entityManager.find(Contributor.class,id);
     }
 
-    public void update(Turista t){
-        Turista turistaDaAggiornare = findTurista(t.getId());
+    public void update(Contributor c){
+        Contributor contributorDaAggiornare = findContributor(c.getId());
         entityManager.getTransaction().begin();
-        turistaDaAggiornare.setNome(t.getNome());
-        turistaDaAggiornare.setEmail(t.getEmail());
-        turistaDaAggiornare.setPassword(t.getPassword());
+        contributorDaAggiornare.setNome(c.getNome());
+        contributorDaAggiornare.setEmail(c.getEmail());
+        contributorDaAggiornare.setPassword(c.getPassword());
         entityManager.getTransaction().commit();
     }
 
-    public void delete(Turista t){
+    public void delete(Contributor c){
         entityManager.getTransaction().begin();
-        entityManager.remove(t);
+        entityManager.remove(c);
         entityManager.getTransaction().commit();
     }
 
@@ -41,4 +42,5 @@ public class TuristaRepository {
         this.entityManager.close();
         this.emf.close();
     }
+
 }
