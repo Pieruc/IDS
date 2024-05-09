@@ -4,7 +4,7 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
 public class TuristaRepository {
-    private EntityManager entityManager;
+    private  EntityManager entityManager;
     private EntityManagerFactory emf;
 
     public TuristaRepository(){

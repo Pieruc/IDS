@@ -8,49 +8,49 @@ public class App {
         turista.setEmail("ggg@gmail");
         turista.setPassword("pippo");
 
-        Repository repository = new Repository();
+        TuristaRepository tRepository = new TuristaRepository();
 
-        repository.add(turista);
+        tRepository.addTurista(turista);
 
         System.out.println("Aggiunto: "+ turista.toString());
 
-        turista = (Turista) repository.find(turista.getId());
+        turista = tRepository.findTurista(turista.getId());
 
         System.out.println("Trovato: "+ turista.toString());
 
         turista.setNome("Giulia");
 
-        repository.update(turista);
+        tRepository.update(turista);
 
         System.out.println("Aggiornato: "+turista.toString());
 
-        /*repository.delete(turista);
+        tRepository.delete(turista);
 
-        System.out.println("Cancellato: "+turista.toString());*/
+        System.out.println("Cancellato: "+turista.toString());
 
         Contributor contributor = new Contributor();
         contributor.setNome("Luca");
         contributor.setEmail("ggg@gmail");
         contributor.setPassword("pippo");
 
-        Repository c_repository = new Repository();
+        ContributorRepository cRepository = new ContributorRepository();
 
-        c_repository.add(contributor);
+        cRepository.addContributor(contributor);
 
         System.out.println("Aggiunto: "+ contributor.toString());
 
-        contributor = (Contributor) c_repository.find(contributor.getId());
+        contributor = (Contributor) cRepository.findContributor(contributor.getId());
 
         System.out.println("Trovato: "+ contributor.toString());
 
         contributor.setNome("Gianni");
 
-        c_repository.update(contributor);
+        cRepository.update(contributor);
 
         System.out.println("Aggiornato: "+contributor.toString());
 
-        /*c_repository.delete(contributor);
+        cRepository.delete(contributor);
 
-        System.out.println("Cancellato: "+contributor.toString());*/
+        System.out.println("Cancellato: "+contributor.toString());
     }
 }
