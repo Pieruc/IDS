@@ -1,4 +1,5 @@
 import ids.model.Contributor;
+import ids.model.Curatore;
 import ids.model.Turista;
 
 public class App {
