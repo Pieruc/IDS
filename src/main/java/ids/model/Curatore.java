@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Curatore")
-public class Curatore extends Contributor{
+public class Curatore implements Utente{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -48,4 +48,8 @@ public class Curatore extends Contributor{
 
     }
 
+    @Override
+    public void crea() {
+        System.out.println("Curatore creato!");
+    }
 }

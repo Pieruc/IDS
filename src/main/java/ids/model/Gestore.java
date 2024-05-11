@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Gestore della Piattaforma")
-public class Gestore {
+public class Gestore implements Utente{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -60,4 +60,8 @@ public class Gestore {
                 '}';
     }
 
+    @Override
+    public void crea() {
+        System.out.println("Gestore della piattaforma creato!");
+    }
 }

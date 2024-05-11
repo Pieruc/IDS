@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Turista")
-public class Turista {
+public class Turista implements Utente{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -78,4 +78,8 @@ public class Turista {
 
     }
 
+    @Override
+    public void crea() {
+        System.out.println("Turista creato!");
+    }
 }

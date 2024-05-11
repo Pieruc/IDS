@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Contributor Autorizzato")
-public class ContributorAutorizzato extends Contributor{
+public class ContributorAutorizzato implements Utente{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -36,4 +36,8 @@ public class ContributorAutorizzato extends Contributor{
                 '}';
     }
 
+    @Override
+    public void crea() {
+        System.out.println("Contributor autorizzato creato!");
+    }
 }

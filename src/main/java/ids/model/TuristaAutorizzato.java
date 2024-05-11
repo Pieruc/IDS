@@ -3,8 +3,8 @@ package ids.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Contributor Autorizzato")
-public class TuristaAutorizzato extends Turista{
+@Table(name = "Turista Autorizzato")
+public class TuristaAutorizzato implements Utente{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -38,6 +38,10 @@ public class TuristaAutorizzato extends Turista{
 
     public void archivia(){
 
+    }
+    @Override
+    public void crea(){
+        System.out.println("Turista autorizzato creato!");
     }
 
 }

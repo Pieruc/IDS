@@ -1,35 +1,42 @@
-import ids.model.Contributor;
-import ids.model.Curatore;
-import ids.model.Turista;
+import ids.model.*;
 
 public class App {
     public static void main(String[] args) {
-        Turista turista = new Turista();
+        /*Turista turista = new Turista();
         turista.setNome("Marco");
         turista.setEmail("ggg@gmail");
-        turista.setPassword("pippo");
+        turista.setPassword("pippo");*/
 
-        TuristaRepository tRepository = new TuristaRepository();
+        UtenteFactory factory = new UtenteFactory();
 
-        tRepository.addTurista(turista);
+        Utente user1 = factory.getUtente("Turista","Martina","ggg@email","pippo");
+        user1.crea();
 
-        System.out.println("Aggiunto: "+ turista.toString());
+        if(user1 instanceof Turista turista){
+            TuristaRepository tRepository = new TuristaRepository();
 
-        turista = tRepository.findTurista(turista.getId());
+            tRepository.addTurista(turista);
 
-        System.out.println("Trovato: "+ turista.toString());
+            System.out.println("Aggiunto: "+ turista.toString());
 
-        turista.setNome("Giulia");
+            turista = tRepository.findTurista(turista.getId());
 
-        tRepository.update(turista);
+            System.out.println("Trovato: "+ turista.toString());
 
-        System.out.println("Aggiornato: "+turista.toString());
+            turista.setNome("Giulia");
 
-        tRepository.delete(turista);
+            /*tRepository.update(turista);
 
-        System.out.println("Cancellato: "+turista.toString());
+            System.out.println("Aggiornato: "+turista.toString());
 
-        Contributor contributor = new Contributor();
+            tRepository.delete(turista);
+
+            System.out.println("Cancellato: "+turista.toString());*/
+        }
+
+
+
+        /*Contributor contributor = new Contributor();
         contributor.setNome("Luca");
         contributor.setEmail("ggg@gmail");
         contributor.setPassword("pippo");
@@ -40,7 +47,7 @@ public class App {
 
         System.out.println("Aggiunto: "+ contributor.toString());
 
-        contributor = (Contributor) cRepository.findContributor(contributor.getId());
+        contributor = cRepository.findContributor(contributor.getId());
 
         System.out.println("Trovato: "+ contributor.toString());
 
@@ -52,6 +59,6 @@ public class App {
 
         cRepository.delete(contributor);
 
-        System.out.println("Cancellato: "+contributor.toString());
+        System.out.println("Cancellato: "+contributor.toString());*/
     }
 }
