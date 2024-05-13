@@ -68,7 +68,13 @@ public class Contributor implements Utente{
     }
 
     public boolean caricaContenuto() {
-        return true;
+
+        Object content = new Object();
+        Luogo luogo = new Luogo();
+
+        Contenuto contenuto = new Contenuto(this, content, luogo);
+
+        return false;
     }
 
     public void modificaRuolo() {

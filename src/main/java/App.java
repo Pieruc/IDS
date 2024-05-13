@@ -41,9 +41,9 @@ public class App {
         contributor.setEmail("ggg@gmail");
         contributor.setPassword("pippo");
 
-        ContributorRepository cRepository = new ContributorRepository();
+        ContributorAutorizzatoRepository cRepository = new ContributorAutorizzatoRepository();
 
-        cRepository.addContributor(contributor);
+        cRepository.addContributorAutorizzato(contributor);
 
         System.out.println("Aggiunto: "+ contributor.toString());
 

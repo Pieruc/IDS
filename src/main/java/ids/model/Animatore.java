@@ -2,6 +2,9 @@ package ids.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "Animatore")
 public class Animatore implements Utente{
@@ -63,6 +66,13 @@ public class Animatore implements Utente{
     }
 
     public void creaContest(){
+
+        String titolo ="Titolo del Contest";
+        String descrizione="Descrizione del Contest";
+        List<Utente> partecipanti = new ArrayList<Utente>();
+        Object contenuto = new Object();
+
+        Contest contest = new Contest(titolo, false, descrizione, partecipanti, contenuto);
 
     }
 

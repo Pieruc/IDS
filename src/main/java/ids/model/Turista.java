@@ -2,6 +2,9 @@ package ids.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "Turista")
 public class Turista implements Utente{
@@ -68,10 +71,17 @@ public class Turista implements Utente{
 
     public void creaItinerario() {
 
+        List<Luogo> itinerario = new ArrayList<Luogo>();
+
     }
 
     public boolean segnalaContenuto() {
-        return true;
+
+        String m = "Messaggio di Segnalazione";
+
+        Segnalazione s = new Segnalazione(this, m, false);
+
+        return s.getStato();
     }
 
     public void modificaRuolo() {
