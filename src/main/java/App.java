@@ -1,4 +1,5 @@
 import ids.model.*;
+import ids.repository.TuristaRepository;
 
 public class App {
     public static void main(String[] args) {
@@ -25,13 +26,13 @@ public class App {
 
             turista.setNome("Giulia");
 
-            /*tRepository.update(turista);
+            tRepository.update(turista);
 
             System.out.println("Aggiornato: "+turista.toString());
 
             tRepository.delete(turista);
 
-            System.out.println("Cancellato: "+turista.toString());*/
+            System.out.println("Cancellato: "+turista.toString());
         }
 
 
@@ -41,7 +42,7 @@ public class App {
         contributor.setEmail("ggg@gmail");
         contributor.setPassword("pippo");
 
-        ContributorAutorizzatoRepository cRepository = new ContributorAutorizzatoRepository();
+        ids.repository.ContributorAutorizzatoRepository cRepository = new ids.repository.ContributorAutorizzatoRepository();
 
         cRepository.addContributorAutorizzato(contributor);
 
@@ -59,6 +60,8 @@ public class App {
 
         cRepository.delete(contributor);
 
-        System.out.println("Cancellato: "+contributor.toString());*/
+        System.out.println("Cancellato: "+contributor.toString());
+        }*/
     }
 }
+

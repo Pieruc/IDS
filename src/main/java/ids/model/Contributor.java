@@ -2,10 +2,12 @@ package ids.model;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "Contributor")
-public class Contributor implements Utente{
-
+public class Contributor implements Utente, Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;

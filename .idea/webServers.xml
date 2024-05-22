@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="7c046471-3dc1-4373-a5d4-9e9df9d30e5c" name="TomcatIDS" url="http://localhost/9090">
+        <fileTransfer mountedRoot="C:\Users\romin\IdeaProjects\IDS\apache-tomcat-10.1.24" accessType="MOUNT" port="0" />
+      </webServer>
+    </option>
+  </component>
+</project>
