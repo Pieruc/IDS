@@ -14,22 +14,51 @@ import ids.repository.*;
 
 import java.io.IOException;
 
-@WebServlet("/register")
+@WebServlet(urlPatterns = {"/register","/login"})
 public class UtenteServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     public UtenteServlet(){
         super();
     }
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        String path=request.getServletPath();
+        switch (path){
+            case "/register":
+                registerGet(request,response);
+                break;
+            case "/login":
+                loginGet(request,response);
+                break;
+            }
+    }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
+    private void registerGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         response.getWriter().append("Served at: ").append(request.getContextPath());
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/registrati.jsp");
         dispatcher.forward(request,response);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
+    private void loginGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String path=request.getServletPath();
+        switch (path){
+            case "/register":
+                registerPost(request,response);
+                break;
+            case "/login":
+                loginPost(request,response);
+                break;
+        }
+    }
+
+    private void registerPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         UtenteFactory factory = new UtenteFactory();
 
         String tipoUtente = request.getParameter("ruolo");
@@ -51,5 +80,9 @@ public class UtenteServlet extends HttpServlet {
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/registrati-success.jsp");
         dispatcher.forward(request,response);
+    }
+
+    private void loginPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+
     }
 }
