@@ -1,127 +1,114 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Leaflet Map with H2 Database</title>
+    <title>Mappa Interattiva Comune</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-        #map {
-            height: 600px;
-            width: 100%;
-        }
-        #formContainer {
-            display: none;
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: white;
-            padding: 20px;
-            border: 1px solid #ccc;
-            z-index: 1000;
-        }
+        #map { height: 600px; width: 100%; }
+        .leaflet-popup-content-wrapper { width: 300px; }
     </style>
 </head>
 <body>
-<h1>Interactive Map with H2 Database</h1>
+<h1>Mappa Interattiva Comune</h1>
 <div id="map"></div>
-<div id="formContainer">
-    <h3>Add Marker</h3>
-    <form id="popupForm">
-        <label for="title">Title:</label>
-        <input type="text" id="title" name="title" required><br><br>
-        <label for="description">Description:</label>
-        <textarea id="description" name="description" required></textarea><br><br>
-        <label for="imageUrl">Image URL:</label>
-        <input type="text" id="imageUrl" name="imageUrl"><br><br>
-        <button type="submit">Add Marker</button>
-        <button type="button" id="cancelButton">Cancel</button>
-    </form>
-</div>
-
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
-    var map = L.map('map').setView([51.505, -0.09], 13);
+    var map = L.map('map').setView([43.1465, 13.068], 16);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    var formContainer = document.getElementById('formContainer');
-    var popupForm = document.getElementById('popupForm');
-    var cancelButton = document.getElementById('cancelButton');
-    var currentLatLng;
+    function loadMarkers() {
+        $.getJSON('getMarkers', function(data) {
+            data.forEach(function(marker) {
+                addMarkerToMap(marker.id, marker.latitude, marker.longitude, marker.title, marker.description, marker.imageUrl);
+            });
+        });
+    }
 
-    map.on('click', function(e) {
-        currentLatLng = e.latlng;
-        formContainer.style.display = 'block';
-    });
-
-    popupForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        var title = document.getElementById('title').value;
-        var description = document.getElementById('description').value;
-        var imageUrl = document.getElementById('imageUrl').value;
-
-        var popupContent = "<div>" +
-            "<h3>" + title + "</h3>" +
-            "<p>" + description + "</p>";
-
+    function addMarkerToMap(id, lat, lng, title, description, imageUrl) {
+        var popupContent = '<b>' + title + '</b><br>' + description;
         if (imageUrl) {
-            popupContent += '<img src="' + imageUrl + '" alt="Image" style="width: 100%; height: auto;" />';
+            popupContent += '<br><img src="' + imageUrl + '" alt="Image" style="width:250px;height:auto;">';
         }
+        popupContent += '<br><button onclick="deleteMarker(' + id + ', this)">Cancella Contenuto</button>';
+        var marker = L.marker([lat, lng]).addTo(map)
+            .bindPopup(popupContent);
 
-        popupContent += "</div>";
+        marker.on('popupopen', function() {
+            $('.leaflet-popup-content button').click(function(event) {
+                event.stopPropagation();
+            });
+        });
+    }
 
-        var marker = L.marker(currentLatLng).addTo(map)
-            .bindPopup(popupContent).openPopup();
-
-        // Salva il marker nel database
-        var markerData = {
-            latitude: currentLatLng.lat,
-            longitude: currentLatLng.lng,
+    function addMarker(lat, lng, title, description, imageUrl) {
+        $.post('addMarker', {
             title: title,
             description: description,
+            latitude: lat,
+            longitude: lng,
             imageUrl: imageUrl
-        };
-
-        fetch('/markers', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(markerData)
-        }).then(response => response.json())
-            .then(data => console.log('Marker saved:', data))
-            .catch(error => console.error('Error:', error));
-
-        formContainer.style.display = 'none';
-        popupForm.reset();
-    });
-
-    cancelButton.addEventListener('click', function() {
-        formContainer.style.display = 'none';
-        popupForm.reset();
-    });
-
-    // Carica i marker dal database
-    fetch('/markers')
-        .then(response => response.json())
-        .then(markers => {
-            markers.forEach(marker => {
-                var popupContent = "<div>" +
-                    "<h3>" + marker.title + "</h3>" +
-                    "<p>" + marker.description + "</p>";
-
-                if (marker.imageUrl) {
-                    popupContent += '<img src="' + marker.imageUrl + '" alt="Image" style="width: 100%; height: auto;" />';
+        }, function(response) {
+            map.eachLayer(function (layer) {
+                if (!!layer.toGeoJSON) {
+                    map.removeLayer(layer);
                 }
-
-                popupContent += "</div>";
-
-                L.marker([marker.latitude, marker.longitude]).addTo(map)
-                    .bindPopup(popupContent);
             });
-        })
-        .catch(error => console.error('Error:', error));
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+            loadMarkers();
+        });
+    }
+
+    function deleteMarker(id, button) {
+        $.post('deleteMarker', { id: id }, function() {
+            var marker = $(button).closest('.leaflet-marker-icon');
+            map.removeLayer(marker);
+            loadMarkers();
+            map.eachLayer(function (layer) {
+                if (!!layer.toGeoJSON) {
+                    map.removeLayer(layer);
+                }
+            });
+        });
+    }
+
+    map.on('click', function(e) {
+        var lat = e.latlng.lat;
+        var lng = e.latlng.lng;
+
+        var formHtml = '<form id="markerForm">' +
+            '<label for="title">Nome:</label><br>' +
+            '<input type="text" id="title" name="title" required><br>' +
+            '<label for="description">Descrizione:</label><br>' +
+            '<textarea id="description" name="description" required></textarea><br>' +
+            '<label for="imageUrl">URL Immagine (Facoltativo) :</label><br>' +
+            '<input type="text" id="imageUrl" name="imageUrl"><br>' +
+            '<button type="submit">Aggiungi Contenuto</button>' +
+            '</form>';
+
+        L.popup()
+            .setLatLng(e.latlng)
+            .setContent(formHtml)
+            .openOn(map);
+
+        $('#markerForm').submit(function(event) {
+            event.preventDefault();
+            var title = $('#title').val();
+            var description = $('#description').val();
+            var imageUrl = $('#imageUrl').val();
+            addMarker(lat, lng, title, description, imageUrl);
+            map.closePopup();
+        });
+    });
+
+    $(document).ready(function() {
+        loadMarkers();
+    });
 </script>
 </body>
 </html>
