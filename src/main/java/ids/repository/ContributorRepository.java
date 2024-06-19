@@ -1,4 +1,4 @@
-package ids.repository;
+/*package ids.repository;
 
 import ids.model.Contributor;
 import jakarta.persistence.EntityManager;
@@ -45,4 +45,13 @@ public class ContributorRepository {
         this.emf.close();
     }
 
-}
+}*/
+
+package ids.repository;
+
+import ids.model.Contributor;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ContributorRepository extends JpaRepository<Contributor,String>{}
