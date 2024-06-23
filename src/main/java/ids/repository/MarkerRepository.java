@@ -1,6 +1,6 @@
-package ids.repository;
+package ids.Repository;
 
-import ids.model.Marker;
+import ids.Model.Marker;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
