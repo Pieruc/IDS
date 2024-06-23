@@ -1,14 +1,21 @@
-package ids.model;
+package ids.Model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity
 public class Luogo {
 
+    @Id
+    @Column(name="Nome")
     private String nome;
+    @Column(name="Latitudine")
     private double latitudine;
+    @Column(name="Longitudine")
     private double longitudine;
 
-    public Luogo () {
-
-    }
+    public Luogo () {}
 
     public Luogo(String nome, double latitudine, double longitudine) {
 

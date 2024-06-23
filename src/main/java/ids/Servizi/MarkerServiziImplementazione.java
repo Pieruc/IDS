@@ -1,7 +1,11 @@
 package ids.Servizi;
 
-import ids.model.Marker;
-import ids.repository.MarkerRepository;
+import ids.Model.Itinerario;
+import ids.Model.Luogo;
+import ids.Model.Marker;
+import ids.Repository.ItinerarioRepository;
+import ids.Repository.LuogoRepository;
+import ids.Repository.MarkerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +20,12 @@ public class MarkerServiziImplementazione implements MarkerServizi {
 
     @Autowired
     MarkerRepository mRep;
+
+    @Autowired
+    ItinerarioRepository iRep;
+
+    @Autowired
+    LuogoRepository lRep;
 
     @Override
     public void save(Marker m) {
@@ -83,5 +93,44 @@ public class MarkerServiziImplementazione implements MarkerServizi {
     @Override
     public void eliminaMarker(Marker m) {
         mRep.delete(m);
+    }
+
+    @Override
+    public ResponseEntity<List<Luogo>> listaLuoghi() {
+        try {
+            List<Luogo> luoghi = new ArrayList<>(lRep.findAll());
+            if(luoghi.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(luoghi,HttpStatus.OK);
+        } catch (Exception ex){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseEntity<List<Itinerario>> listaItinerari() {
+        try{
+            List<Itinerario> lista = new ArrayList<>(iRep.findAll());
+            if(lista.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(lista,HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public Itinerario addLuogo(Luogo luogo, String nome) {
+        Itinerario it = iRep.findById(nome).orElseThrow(() -> new RuntimeException("Itinerario non trovato"));
+        it.addLuogo(luogo);
+        return iRep.save(it);
+    }
+
+    @Override
+    public Luogo creaLuogo(String nome, double latitudine, double longitudine) {
+        Luogo nuovo = new Luogo(nome,latitudine,longitudine);
+        return lRep.save(nuovo);
     }
 }

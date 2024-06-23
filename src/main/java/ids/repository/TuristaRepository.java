@@ -1,6 +1,6 @@
-package ids.repository;
+package ids.Repository;
 
-import ids.model.Turista;
+import ids.Model.Turista;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

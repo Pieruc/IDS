@@ -1,30 +1,29 @@
 package ids.Servizi;
 
-import ids.model.Contributor;
-import ids.model.Turista;
-import ids.model.Utente;
-import ids.model.UtenteFactory;
-import ids.repository.ContributorRepository;
-import ids.repository.TuristaRepository;
+import ids.Model.*;
+import ids.Repository.ContributorRepository;
+import ids.Repository.ItinerarioRepository;
+import ids.Repository.TuristaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserServiziImplementazione implements UtenteServizi {
+public class UtenteServiziImplementazione implements UtenteServizi {
 
     @Autowired
     TuristaRepository tRep;
 
     @Autowired
     ContributorRepository cRep;
+
+    @Autowired
+    ItinerarioRepository iRep;
 
     @Override
     public void save(Turista t) {
@@ -62,14 +61,14 @@ public class UserServiziImplementazione implements UtenteServizi {
         }
     }
 
-    public ResponseEntity<Turista> ricercaTuristaConMail(@PathVariable String e){
+    public ResponseEntity<Turista> ricercaTuristaConMail(String e){
         Optional<Turista> t = tRep.findById(e);
         return t.map(
                 turista -> new ResponseEntity<>(turista, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    public ResponseEntity<Contributor> ricercaContributorConMail(@PathVariable String e){
+    public ResponseEntity<Contributor> ricercaContributorConMail(String e){
         Optional<Contributor> c = cRep.findById(e);
         return c.map(
                         contributor -> new ResponseEntity<>(contributor, HttpStatus.OK))
@@ -77,7 +76,7 @@ public class UserServiziImplementazione implements UtenteServizi {
     }
 
     @Override
-    public boolean addUtente(@RequestParam String tipo, @RequestParam String n, @RequestParam String e, @RequestParam String p) {
+    public boolean addUtente(String tipo, String n, String e, String p) {
         try {
             UtenteFactory factory = new UtenteFactory();
             Utente u = factory.getUtente(tipo, n, e, p);
@@ -122,14 +121,15 @@ public class UserServiziImplementazione implements UtenteServizi {
     }
 
     @Override
-    public Contributor trovaContributorConMail(@PathVariable String email) {
+    public Contributor trovaContributorConMail(String email) {
         if(cRep.findById(email).isPresent()){
             return cRep.findById(email).get();
         }
         else return null;
     }
 
-    public Turista trovaTuristaConMail(@PathVariable String email) {
+    @Override
+    public Turista trovaTuristaConMail(String email) {
         if(tRep.findById(email).isPresent()){
             return tRep.findById(email).get();
         }
@@ -144,5 +144,49 @@ public class UserServiziImplementazione implements UtenteServizi {
     @Override
     public void eliminaContributor(Contributor c) {
         cRep.delete(c);
+    }
+
+    @Override
+    public boolean loginCheck(Request request) {
+        String tipo = request.getTipo();
+        if(tipo.equalsIgnoreCase("turista")){
+            Turista temp = tRep.findById(request.getEmail()).orElse(null);
+            return temp != null &&
+                    temp.getNome().equalsIgnoreCase(request.getNome()) &&
+                    temp.getPassword().equalsIgnoreCase(request.getPassword());
+        } else if(tipo.equalsIgnoreCase("contributor")){
+            Contributor temp = cRep.findById(request.getEmail()).orElse(null);
+            return temp != null &&
+                    temp.getNome().equalsIgnoreCase(request.getNome()) &&
+                    temp.getPassword().equalsIgnoreCase(request.getPassword());
+        }
+        return false;
+    }
+
+    @Override
+    public boolean registerCheck(String tipo, String nome, String email, String password) {
+        if(tipo.equalsIgnoreCase("turista")){
+            Turista temp = tRep.findById(email).orElse(null);
+            if(temp == null){
+                addUtente(tipo,nome,email,password);
+                return true;
+            } else {
+                return false;
+            }
+        }
+        if(tipo.equalsIgnoreCase("contributor")){
+            Contributor temp = cRep.findById(email).orElse(null);
+            if(temp == null){
+                addUtente(tipo,nome,email,password);
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
+    }
+    @Override
+    public void creaItinerario(Turista turista, String nome) {
+        iRep.save(new Itinerario(nome,turista));
     }
 }

@@ -1,23 +1,27 @@
-package ids.model;
+package ids.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "Turista")
 public class Turista implements Utente, Serializable {
     private static final long serialVersionUID = 1L;
-    @Column(name="Nome")
-    private String nome;
+
     @Id
     @Column(name="Email")
     private String email;
+    @Column(name="Nome")
+    private String nome;
     @Column(name="Password")
     private String password;
-
+    @JsonIgnore
+    @OneToMany(mappedBy = "proprietario")
+    private Set<Itinerario> itinerari = new HashSet<>();
     public Turista(){
 
     }
@@ -51,6 +55,9 @@ public class Turista implements Utente, Serializable {
         this.password = password;
     }
 
+    public Set<Itinerario> getItinerari() {
+        return itinerari;
+    }
 
     @Override
     public String toString() {
@@ -61,9 +68,7 @@ public class Turista implements Utente, Serializable {
                 '}';
     }
 
-    public void creaItinerario() {
-
-        List<Luogo> itinerario = new ArrayList<Luogo>();
+    public void creaItinerario(String nome) {
 
     }
 

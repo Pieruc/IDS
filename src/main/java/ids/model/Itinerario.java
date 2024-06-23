@@ -1,36 +1,45 @@
-package ids.model;
-import java.util.List;
+package ids.Model;
 
+import jakarta.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+
+@Entity
 public class Itinerario {
 
+    @Id
+    @Column(name="Nome")
     private String nome;
-    private List<Luogo> percorso;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="Luoghi")
+    private Set<Luogo> percorso = new HashSet<>();
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="proprietario", referencedColumnName = "Email")
+    private Turista proprietario;
 
     public Itinerario(){
 
     }
 
-    public Itinerario(String nome, List<Luogo> percorso) {
-
-        this.nome = nome;
-        this.percorso = percorso;
-
+    public Itinerario(String nome, Turista turista){
+        this.nome=nome;
+        proprietario = turista;
     }
 
     public String getNome() {
         return nome;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public List<Luogo> getPercorso() {
+    public Set<Luogo> getPercorso() {
         return percorso;
     }
 
-    public void setPercorso(List<Luogo> percorso) {
-        this.percorso = percorso;
+    public Turista getProprietario() {
+        return proprietario;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public void addLuogo(Luogo luogo) {

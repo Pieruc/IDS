@@ -1,9 +1,7 @@
 package ids.Servizi;
 
-import ids.model.*;
+import ids.Model.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -12,14 +10,18 @@ public interface UtenteServizi {
     void save(Contributor c);
     ResponseEntity<List<Turista>> listaTuristi();
     ResponseEntity<List<Contributor>> listaContributor();
-    ResponseEntity<Contributor> ricercaContributorConMail(@PathVariable String email);
-    ResponseEntity<Turista> ricercaTuristaConMail(@PathVariable String email);
-    boolean addUtente(@RequestParam String tipo, @RequestParam String nome, @RequestParam String email, @RequestParam String password);
-    Contributor trovaContributorConMail(@PathVariable String email);
-    Turista trovaTuristaConMail(@PathVariable String email);
-    ResponseEntity<Contributor> aggiornaContributorConMail(@RequestParam String nome, @RequestParam String email, @RequestParam String password);
-    ResponseEntity<Turista> aggiornaTuristaConMail(@RequestParam String nome, @RequestParam String email, @RequestParam String password);
+    ResponseEntity<Contributor> ricercaContributorConMail(String email);
+    ResponseEntity<Turista> ricercaTuristaConMail(String email);
+    boolean addUtente(String tipo, String nome, String email, String password);
+    Contributor trovaContributorConMail(String email);
+    Turista trovaTuristaConMail(String email);
+    ResponseEntity<Contributor> aggiornaContributorConMail(String nome, String email, String password);
+    ResponseEntity<Turista> aggiornaTuristaConMail(String nome, String email, String password);
     void eliminaTurista(Turista t);
     void eliminaContributor(Contributor c);
+    boolean loginCheck(Request request);
+    boolean registerCheck(String tipo,String nome, String email, String password);
+    void creaItinerario(Turista turista,String nome);
+
 
 }

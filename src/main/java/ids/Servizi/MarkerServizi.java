@@ -1,6 +1,6 @@
 package ids.Servizi;
 
-import ids.model.*;
+import ids.Model.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,4 +18,9 @@ public interface MarkerServizi {
                                                @RequestParam String title, @RequestParam String description,
                                                @RequestParam String imageUrl);
     void eliminaMarker(Marker m);
+
+    ResponseEntity<List<Luogo>> listaLuoghi();
+    ResponseEntity<List<Itinerario>> listaItinerari();
+    Itinerario addLuogo(Luogo luogo, String nome);
+    Luogo creaLuogo(String nome, double latitudine, double longitudine);
 }
