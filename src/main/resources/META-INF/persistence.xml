@@ -8,6 +8,9 @@
         <class>ids.Model.Itinerario</class>
         <class>ids.Model.Luogo</class>
         <class>ids.Model.Segnalazione</class>
+        <class>ids.Model.Contest</class>
+        <class>ids.Model.TuristaAutorizzato</class>
+        <class>ids.Model.ContributorAutorizzato</class>
 
         <properties>
             <property name="jakarta.persistence.jdbc.url" value="jdbc:h2:~/test"/>

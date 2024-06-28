@@ -127,4 +127,9 @@ public class UtenteController {
         }
         else return new ResponseEntity<>("Segnalazione non verificata!", HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @PutMapping("/partecipaAlContest/{titolo}")
+    public ResponseEntity<Contest> partecipaAlContest(@PathVariable String titolo, @RequestBody Request request){
+        return new ResponseEntity<>(sRep.partecipaAlContest(titolo,request),HttpStatus.OK);
+    }
 }

@@ -25,6 +25,9 @@ public class Turista implements Utente, Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "autore")
     private Set<Segnalazione> segnalazioni = new HashSet<>();
+    @JsonIgnore
+    @ManyToMany(mappedBy = "tPartecipanti")
+    private Set<Contest> partecipazioni = new HashSet<>();
 
     public Turista(){
 
@@ -72,21 +75,8 @@ public class Turista implements Utente, Serializable {
                 '}';
     }
 
-    public void creaItinerario(String nome) {
-
-    }
-
-    /*public boolean segnalaContenuto() {
-
-        String m = "Messaggio di Segnalazione";
-
-        Segnalazione s = new Segnalazione(this, m, false);
-
-        return s.getStato();
-    }*/
-
-    public void modificaRuolo() {
-
+    public Set<Contest> getPartecipazioni(){
+        return partecipazioni;
     }
 
     @Override
