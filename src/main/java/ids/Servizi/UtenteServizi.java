@@ -29,4 +29,5 @@ public interface UtenteServizi {
     Segnalazione trovaSegnalazione(String titolo);
     void eliminaSegnalazione(Segnalazione segnalazione);
     boolean verificaSegnalazione(String titolo);
+    Contest partecipaAlContest(String titolo,Request request);
 }

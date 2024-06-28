@@ -29,6 +29,15 @@ public class UtenteServiziImplementazione implements UtenteServizi {
     @Autowired
     LuogoRepository lRep;
 
+    @Autowired
+    ContestRepository coRep;
+
+    @Autowired
+    TuristaAutorizzatoRepository tARep;
+
+    @Autowired
+    ContributorAutorizzatoRepository cARep;
+
     @Override
     public void save(Turista t) {
         tRep.save(t);
@@ -244,5 +253,31 @@ public class UtenteServiziImplementazione implements UtenteServizi {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public Contest partecipaAlContest(String titolo, Request request) {
+        Contest contest = coRep.findById(titolo).orElseThrow(() -> new RuntimeException("Contest non trovato"));
+        String tipo = request.getTipo();
+        if(contest.getEsclusivita()) {
+            if (tipo.equalsIgnoreCase("turista")) {
+                contest.addTuristaPartecipante(tRep.findById(request.getEmail()).orElseThrow(() -> new RuntimeException("Turista non trovato")));
+                return coRep.save(contest);
+            }
+            if (tipo.equalsIgnoreCase("contributor")) {
+                contest.addContributorPartecipante(cRep.findById(request.getEmail()).orElseThrow(() -> new RuntimeException("Contributor non trovato")));
+                return coRep.save(contest);
+            }
+        } else {
+            if (tipo.equalsIgnoreCase("turistaautorizzato")) {
+                contest.addTuristaAutorizzatoPartecipante(tARep.findById(request.getEmail()).orElseThrow(() -> new RuntimeException("Turista non trovato")));
+                return coRep.save(contest);
+            }
+            if (tipo.equalsIgnoreCase("contributorautorizzato")) {
+                contest.addContributorAutorizzatoPartecipante(cARep.findById(request.getEmail()).orElseThrow(() -> new RuntimeException("Contributor non trovato")));
+                return coRep.save(contest);
+            }
+        }
+        return null;
     }
 }

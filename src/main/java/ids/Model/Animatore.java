@@ -66,21 +66,6 @@ public class Animatore implements Utente, Serializable {
                 '}';
     }
 
-    public void creaContest(){
-
-        String titolo ="Titolo del Contest";
-        String descrizione="Descrizione del Contest";
-        List<Utente> partecipanti = new ArrayList<Utente>();
-        Object contenuto = new Object();
-
-        Contest contest = new Contest(titolo, false, descrizione, partecipanti, contenuto);
-
-    }
-
-    public void chiudiContest(){
-
-    }
-
     @Override
     public void crea() {
         System.out.println("Animatore creato!");

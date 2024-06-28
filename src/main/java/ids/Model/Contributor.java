@@ -1,8 +1,11 @@
 package ids.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "Contributor")
@@ -15,7 +18,9 @@ public class Contributor implements Utente, Serializable {
     private String email;
     @Column(name="Password")
     private String password;
-
+    @JsonIgnore
+    @ManyToMany(mappedBy = "cPartecipanti")
+    private Set<Contest> partecipazioni=new HashSet<>();
     public Contributor(){
 
     }
@@ -57,7 +62,19 @@ public class Contributor implements Utente, Serializable {
                 ", password='" + password + '\'' +
                 '}';
     }
+    public Set<Contest> getPartecipazioni(){
+        return partecipazioni;
+    }
 
+    public void partecipaContest(Contest contest){
+        partecipazioni.add(contest);
+        contest.getcPartecipanti().add(this);
+    }
+
+    public void fineContest(Contest contest){
+        partecipazioni.remove(contest);
+        contest.getcPartecipanti().remove(this);
+    }
     public boolean caricaContenuto() {
 
         Object content = new Object();

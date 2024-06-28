@@ -10,15 +10,11 @@ import java.util.List;
 public interface MarkerServizi {
     void save(Marker m);
     ResponseEntity<List<Marker>> listaMarker();
-    ResponseEntity<Marker> ricercaMarkerConId(@PathVariable int id);
-    boolean addMarker(@RequestParam double lat, @RequestParam double lon, @RequestParam String title,
-                      @RequestParam String description, @RequestParam String imageUrl);
-    Marker trovaMarkerConId(@RequestParam int id);
-    ResponseEntity<Marker> aggiornaMarkerConId(@PathVariable int id, @RequestParam double lat, @RequestParam double lon,
-                                               @RequestParam String title, @RequestParam String description,
-                                               @RequestParam String imageUrl);
+    ResponseEntity<Marker> ricercaMarkerConId(int id);
+    boolean addMarker(double lat, double lon, String title, String description, String imageUrl);
+    Marker trovaMarkerConId(int id);
+    ResponseEntity<Marker> aggiornaMarkerConId(int id, double lat, double lon, String title, String description, String imageUrl);
     void eliminaMarker(Marker m);
-
     ResponseEntity<List<Luogo>> listaLuoghi();
     ResponseEntity<List<Itinerario>> listaItinerari();
     Itinerario addLuogo(Luogo luogo, String nome);

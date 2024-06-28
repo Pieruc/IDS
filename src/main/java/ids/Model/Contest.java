@@ -1,26 +1,57 @@
 package ids.Model;
-import java.util.List;
+import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+@Entity
 public class Contest {
 
+    @Id
     private String titolo;
     private boolean esclusivita;
     private String descrizione;
-    private List<Utente> partecipanti;
-    private Object contenuto;
+    @ManyToMany
+    @JoinTable(
+            name="contest_turisti",
+            joinColumns = @JoinColumn(name="turisti_contest"),
+            inverseJoinColumns = @JoinColumn(name="turisti_partecipanti")
+    )
+    private Set<Turista> tPartecipanti = new HashSet<>();
+    @ManyToMany
+    @JoinTable(
+            name="contest_contributor",
+            joinColumns = @JoinColumn(name="contributor_contest"),
+            inverseJoinColumns = @JoinColumn(name = "contributor_partecipanti")
+    )
+    private Set<Contributor> cPartecipanti = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name="contest_turista_autorizzati",
+            joinColumns = @JoinColumn(name="turista_autorizzati_contest"),
+            inverseJoinColumns = @JoinColumn(name = "turista_autorizzati_partecipanti")
+    )
+    private Set<TuristaAutorizzato> tAPartecipanti = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name="contest_contributor_autorizzati",
+            joinColumns = @JoinColumn(name="contributor_autorizzati_contest"),
+            inverseJoinColumns = @JoinColumn(name = "contributor_autorizzati_partecipanti")
+    )
+    private Set<ContributorAutorizzato> cAPartecipanti = new HashSet<>();
 
     public Contest() {
 
     }
 
-    public Contest(String titolo, boolean esclusivita, String descrizione, List<Utente> partecipanti, Object contenuto) {
+    public Contest(String titolo, boolean esclusivita, String descrizione) {
 
         this.titolo = titolo;
         this.esclusivita = esclusivita;
         this.descrizione = descrizione;
-        this.partecipanti = partecipanti;
-        this.contenuto = contenuto;
-
     }
 
     public String getTitolo() {
@@ -31,7 +62,7 @@ public class Contest {
         this.titolo = titolo;
     }
 
-    public boolean isEsclusivita() {
+    public boolean getEsclusivita() {
         return esclusivita;
     }
 
@@ -47,20 +78,55 @@ public class Contest {
         this.descrizione = descrizione;
     }
 
-    public List<Utente> getPartecipanti() {
-        return partecipanti;
+    public Set<Turista> gettPartecipanti(){
+        return tPartecipanti;
+    }
+    public Set<Contributor> getcPartecipanti(){
+        return cPartecipanti;
     }
 
-    public void setPartecipanti(List<Utente> partecipanti) {
-        this.partecipanti = partecipanti;
+    public Set<TuristaAutorizzato> gettAPartecipanti(){
+        return tAPartecipanti;
+    }
+    public Set<ContributorAutorizzato> getcAPartecipanti(){
+        return cAPartecipanti;
     }
 
-    public Object getContenuto() {
-        return contenuto;
+    public void addTuristaPartecipante(Turista t){
+        tPartecipanti.add(t);
+        t.getPartecipazioni().add(this);
+    }
+    public void removeTuristaPartecipante(Turista t){
+        tPartecipanti.remove(t);
+        t.getPartecipazioni().remove(this);
     }
 
-    public void setContenuto(Object contenuto) {
-        this.contenuto = contenuto;
+    public void addContributorPartecipante(Contributor c){
+        cPartecipanti.add(c);
+        c.getPartecipazioni().add(this);
     }
 
+    public void removeContributorPartecipante(Contributor c){
+        cPartecipanti.remove(c);
+        c.getPartecipazioni().remove(this);
+    }
+
+    public void addTuristaAutorizzatoPartecipante(TuristaAutorizzato tA){
+        tAPartecipanti.add(tA);
+        tA.getPartecipazioni().add(this);
+    }
+
+    public void removeTuristaAutorizzatoPartecipante(TuristaAutorizzato tA){
+        tAPartecipanti.remove(tA);
+        tA.getPartecipazioni().remove(this);
+    }
+
+    public void addContributorAutorizzatoPartecipante(ContributorAutorizzato cA){
+        cAPartecipanti.add(cA);
+        cA.getPartecipazioni().add(this);
+    }
+    public void removeContributorAutorizzatoPartecipante(ContributorAutorizzato cA){
+        cAPartecipanti.remove(cA);
+        cA.getPartecipazioni().remove(this);
+    }
 }

@@ -1,23 +1,28 @@
 package ids.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "Turista Autorizzato")
 public class TuristaAutorizzato implements Utente, Serializable {
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+
     @Column(name="nome")
     private String nome;
+
+    @Id
     @Column(name="email")
     private String email;
     @Column(name="password")
     private String password;
-
+    @JsonIgnore
+    @ManyToMany(mappedBy = "tAPartecipanti")
+    private Set<Contest> partecipazioni = new HashSet<>();
     public TuristaAutorizzato() {
 
     }
@@ -52,45 +57,17 @@ public class TuristaAutorizzato implements Utente, Serializable {
         this.password = password;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
     @Override
     public String toString() {
         return "Turista Autorizzato{" +
-                "id=" + id +
                 ", nome='" + nome + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 '}';
     }
 
-    public void creaItinerario() {
-
-    }
-
-    /*public boolean segnalaContenuto() {
-
-        Turista copia = new Turista(this.nome, this.email, this.password);
-
-        String m = "Messaggio di Segnalazione";
-
-        Segnalazione s = new Segnalazione(copia, m, true);
-
-        return true;
-    }*/
-
-    public void modificaRuolo() {
-
-    }
-
-    public void archivia(){
-
+    public Set<Contest> getPartecipazioni(){
+        return partecipazioni;
     }
 
     @Override
