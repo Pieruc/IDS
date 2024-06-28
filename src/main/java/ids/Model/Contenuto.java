@@ -1,4 +1,4 @@
-package ids.model;
+package ids.Model;
 
 public class Contenuto {
 

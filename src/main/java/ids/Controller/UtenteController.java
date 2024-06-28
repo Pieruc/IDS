@@ -1,8 +1,8 @@
-package ids.controller;
+package ids.Controller;
 
-import ids.Servizi.UserServiziImplementazione;
-import ids.model.Contributor;
-import ids.model.Turista;
+import ids.Model.*;
+import ids.Servizi.MarkerServiziImplementazione;
+import ids.Servizi.UtenteServiziImplementazione;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,11 +10,16 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
+@RequestMapping("/utente")
 public class UtenteController {
 
     @Autowired
-    private UserServiziImplementazione sRep;
+    private UtenteServiziImplementazione sRep;
+
+    @Autowired
+    private MarkerServiziImplementazione mRep;
 
     @GetMapping("/listaTuristi")
     public ResponseEntity<List<Turista>> listaTuristi(){
@@ -66,5 +71,60 @@ public class UtenteController {
     public ResponseEntity<HttpStatus> eliminaContributor(@PathVariable String e){
         sRep.eliminaContributor(sRep.trovaContributorConMail(e));
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/creaItinerario/{nome}")
+    public void creaItinerario(@RequestBody Turista turista, @PathVariable String nome){
+        sRep.creaItinerario(turista,nome);
+    }
+
+    @PutMapping("/aggiungiLuogoAdItinerario/{nomeIT}")
+    public ResponseEntity<Itinerario> addLuogo(@RequestBody Luogo luogo,@PathVariable String nomeIT){
+        Itinerario it = mRep.addLuogo(luogo,nomeIT);
+        return new ResponseEntity<>(it,HttpStatus.OK);
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@RequestParam String tipo, @RequestParam String nome, @RequestParam String email, @RequestParam String password){
+        boolean result = sRep.registerCheck(tipo,nome,email,password);
+        if(result){
+            return new ResponseEntity<>("Creato con successo!",HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Qualcosa non va!",HttpStatus.CONFLICT);
+        }
+    }
+
+    @GetMapping("/listaItinerari")
+    public ResponseEntity<List<Itinerario>> listaItinerari(){
+        return mRep.listaItinerari();
+    }
+
+    @PostMapping("/addSegnalazione")
+    public ResponseEntity<String> addSegnalazione(@RequestBody Segnalazione segnalazione){
+        boolean result = sRep.addSegnalazione(segnalazione);
+        if(result){
+            return new ResponseEntity<>("Aggiunto!",HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Impossibile aggiungere",HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/listaSegnalazioni")
+    public ResponseEntity<List<Segnalazione>> listaSegnalazioni(){
+        return sRep.listaSegnalazioni();
+    }
+
+    @DeleteMapping("eliminaSegnalazione/{e}")
+    public ResponseEntity<HttpStatus> eliminaSegnalazione(@PathVariable String e){
+        sRep.eliminaSegnalazione(sRep.trovaSegnalazione(e));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/verificaSegnalazione/{e}")
+    public ResponseEntity<String> verificaSegnalazione(@PathVariable String e){
+        if(sRep.verificaSegnalazione(e)){
+            return new ResponseEntity<>("Segnalazione Verificata!", HttpStatus.OK);
+        }
+        else return new ResponseEntity<>("Segnalazione non verificata!", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

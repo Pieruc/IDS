@@ -1,4 +1,4 @@
-package ids.model;
+package ids.Model;
 
 import jakarta.persistence.*;
 
@@ -11,11 +11,11 @@ public class ContributorAutorizzato implements Utente, Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @Column(name="nome")
+    @Column(name = "nome")
     private String nome;
-    @Column(name="email")
+    @Column(name = "email")
     private String email;
-    @Column(name="password")
+    @Column(name = "password")
     private String password;
 
     public ContributorAutorizzato() {

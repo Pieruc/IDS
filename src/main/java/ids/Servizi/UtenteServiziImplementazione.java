@@ -1,9 +1,7 @@
 package ids.Servizi;
 
 import ids.Model.*;
-import ids.Repository.ContributorRepository;
-import ids.Repository.ItinerarioRepository;
-import ids.Repository.TuristaRepository;
+import ids.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +23,12 @@ public class UtenteServiziImplementazione implements UtenteServizi {
     @Autowired
     ItinerarioRepository iRep;
 
+    @Autowired
+    SegnalazioneRepository sRep;
+
+    @Autowired
+    LuogoRepository lRep;
+
     @Override
     public void save(Turista t) {
         tRep.save(t);
@@ -33,6 +37,11 @@ public class UtenteServiziImplementazione implements UtenteServizi {
     @Override
     public void save(Contributor c) {
         cRep.save(c);
+    }
+
+    @Override
+    public void save(Segnalazione s) {
+        sRep.save(s);
     }
 
     @Override
@@ -188,5 +197,52 @@ public class UtenteServiziImplementazione implements UtenteServizi {
     @Override
     public void creaItinerario(Turista turista, String nome) {
         iRep.save(new Itinerario(nome,turista));
+    }
+
+    @Override
+    public boolean addSegnalazione(Segnalazione segnalazione){
+        try {
+            sRep.save(segnalazione);
+            return true;
+        } catch (Exception ex){
+            return false;
+        }
+    }
+
+    @Override
+    public ResponseEntity<List<Segnalazione>> listaSegnalazioni(){
+        try{
+            List<Segnalazione> list = new ArrayList<>(sRep.findAll());
+            if(list.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(list,HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public Segnalazione trovaSegnalazione(String titolo){
+        if(sRep.findById(titolo).isPresent()){
+            return sRep.findById(titolo).get();
+        }
+        else return null;
+    }
+
+    @Override
+    public void eliminaSegnalazione(Segnalazione segnalazione){
+        sRep.delete(segnalazione);
+    }
+
+    @Override
+    public boolean verificaSegnalazione(String titolo){
+        Segnalazione temp = sRep.findById(titolo).orElse(null);
+        if(temp != null){
+            temp.setStato(true);
+            sRep.save(temp);
+            return true;
+        }
+        return false;
     }
 }

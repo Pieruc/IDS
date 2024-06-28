@@ -1,4 +1,4 @@
-package ids.model;
+package ids.Model;
 
 import jakarta.persistence.*;
 
@@ -74,7 +74,7 @@ public class TuristaAutorizzato implements Utente, Serializable {
 
     }
 
-    public boolean segnalaContenuto() {
+    /*public boolean segnalaContenuto() {
 
         Turista copia = new Turista(this.nome, this.email, this.password);
 
@@ -82,8 +82,8 @@ public class TuristaAutorizzato implements Utente, Serializable {
 
         Segnalazione s = new Segnalazione(copia, m, true);
 
-        return s.getStato();
-    }
+        return true;
+    }*/
 
     public void modificaRuolo() {
 

@@ -1,14 +1,23 @@
-package ids.model;
+package ids.Model;
 
 import jakarta.persistence.*;
+
+@Entity
+@Table(name = "Marker")
 public class Marker {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="Id")
     private Long id;
+    @Column(name="Latitude")
     private double latitude;
+    @Column(name="Longitude")
     private double longitude;
+    @Column(name="Title")
     private String title;
+    @Column(name="Description")
     private String description;
+    @Column(name="ImageUrl")
     private String imageUrl;
 
     public Marker() {

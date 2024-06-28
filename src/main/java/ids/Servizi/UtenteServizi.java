@@ -8,6 +8,8 @@ import java.util.List;
 public interface UtenteServizi {
     void save(Turista t);
     void save(Contributor c);
+    void save(Segnalazione s);
+
     ResponseEntity<List<Turista>> listaTuristi();
     ResponseEntity<List<Contributor>> listaContributor();
     ResponseEntity<Contributor> ricercaContributorConMail(String email);
@@ -22,6 +24,9 @@ public interface UtenteServizi {
     boolean loginCheck(Request request);
     boolean registerCheck(String tipo,String nome, String email, String password);
     void creaItinerario(Turista turista,String nome);
-
-
+    boolean addSegnalazione(Segnalazione segnalazione);
+    ResponseEntity<List<Segnalazione>> listaSegnalazioni();
+    Segnalazione trovaSegnalazione(String titolo);
+    void eliminaSegnalazione(Segnalazione segnalazione);
+    boolean verificaSegnalazione(String titolo);
 }

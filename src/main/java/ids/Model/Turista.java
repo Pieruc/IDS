@@ -1,22 +1,30 @@
-package ids.model;
+package ids.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "Turista")
 public class Turista implements Utente, Serializable {
     private static final long serialVersionUID = 1L;
-    @Column(name="Nome")
-    private String nome;
+
     @Id
     @Column(name="Email")
     private String email;
+    @Column(name="Nome")
+    private String nome;
     @Column(name="Password")
     private String password;
+    @JsonIgnore
+    @OneToMany(mappedBy = "proprietario")
+    private Set<Itinerario> itinerari = new HashSet<>();
+    @JsonIgnore
+    @OneToMany(mappedBy = "autore")
+    private Set<Segnalazione> segnalazioni = new HashSet<>();
 
     public Turista(){
 
@@ -51,6 +59,9 @@ public class Turista implements Utente, Serializable {
         this.password = password;
     }
 
+    public Set<Itinerario> getItinerari() {
+        return itinerari;
+    }
 
     @Override
     public String toString() {
@@ -61,20 +72,18 @@ public class Turista implements Utente, Serializable {
                 '}';
     }
 
-    public void creaItinerario() {
-
-        List<Luogo> itinerario = new ArrayList<Luogo>();
+    public void creaItinerario(String nome) {
 
     }
 
-    public boolean segnalaContenuto() {
+    /*public boolean segnalaContenuto() {
 
         String m = "Messaggio di Segnalazione";
 
         Segnalazione s = new Segnalazione(this, m, false);
 
         return s.getStato();
-    }
+    }*/
 
     public void modificaRuolo() {
 
@@ -83,5 +92,13 @@ public class Turista implements Utente, Serializable {
     @Override
     public void crea() {
         System.out.println("Turista creato!");
+    }
+
+    public Set<Segnalazione> getSegnalazioni() {
+        return segnalazioni;
+    }
+
+    public void setSegnalaziones(Set<Segnalazione> segnalazioni) {
+        this.segnalazioni = segnalazioni;
     }
 }
