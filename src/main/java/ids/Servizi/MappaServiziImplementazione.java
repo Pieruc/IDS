@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class MarkerServiziImplementazione implements MarkerServizi {
+public class MappaServiziImplementazione implements MappaServizi {
 
     @Autowired
     MarkerRepository mRep;

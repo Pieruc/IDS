@@ -5,14 +5,11 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "Marker")
 public class Marker {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="Id")
-    private Long id;
     @Column(name="Latitude")
     private double latitude;
     @Column(name="Longitude")
     private double longitude;
+    @Id
     @Column(name="Title")
     private String title;
     @Column(name="Description")
@@ -75,7 +72,6 @@ public class Marker {
     @Override
     public String toString() {
         return "Marker{" +
-                "id=" + id +
                 ", latitudine='" + latitude + '\'' +
                 ", longitudine='" + longitude + '\'' +
                 ", titolo='" + title + '\'' +
@@ -84,7 +80,4 @@ public class Marker {
                 '}';
     }
 
-    public Long getId() {
-        return id;
-    }
 }

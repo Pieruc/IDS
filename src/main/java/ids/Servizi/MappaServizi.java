@@ -2,12 +2,10 @@ package ids.Servizi;
 
 import ids.Model.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-public interface MarkerServizi {
+public interface MappaServizi {
     void save(Marker m);
     ResponseEntity<List<Marker>> listaMarker();
     ResponseEntity<Marker> ricercaMarkerConId(int id);

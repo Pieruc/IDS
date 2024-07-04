@@ -10,12 +10,9 @@ import java.io.Serializable;
 public class Curatore implements Utente, Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
     @Column(name="nome")
     private String nome;
+    @Id
     @Column(name="email")
     private String email;
     @Column(name="password")
@@ -55,34 +52,13 @@ public class Curatore implements Utente, Serializable {
         this.password = password;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
     @Override
     public String toString() {
         return "Curatore{" +
-                "id=" + id +
                 ", nome='" + nome + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 '}';
-    }
-
-    public boolean verificaContenuto(){
-        return true;
-    }
-
-    public void creaCampagnaSocial(){
-
-    }
-
-    public void cancellaPuntoDiInteresse(){
-
     }
 
     @Override

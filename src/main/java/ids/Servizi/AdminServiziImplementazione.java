@@ -66,4 +66,21 @@ public class AdminServiziImplementazione implements AdminServizi{
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @Override
+    public int rimborso() {
+        return 0;
+    }
+
+    @Override
+    public void modificaRuolo(Turista t) {
+        tRep.delete(tRep.findById(t.getEmail()).orElseThrow(()-> new RuntimeException("Turista non trovato")));
+        TuristaAutorizzato tA = new TuristaAutorizzato(t.getNome(),t.getEmail(),t.getPassword());
+        tARep.save(tA);
+    }
+
+    @Override
+    public void modificaRuolo(Contributor c) {
+
+    }
 }

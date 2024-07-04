@@ -1,7 +1,7 @@
 package ids.Controller;
 
 import ids.Model.*;
-import ids.Servizi.MarkerServiziImplementazione;
+import ids.Servizi.MappaServiziImplementazione;
 import ids.Servizi.UtenteServiziImplementazione;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +19,7 @@ public class UtenteController {
     private UtenteServiziImplementazione sRep;
 
     @Autowired
-    private MarkerServiziImplementazione mRep;
+    private MappaServiziImplementazione mRep;
 
     @GetMapping("/listaTuristi")
     public ResponseEntity<List<Turista>> listaTuristi(){

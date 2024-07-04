@@ -8,11 +8,9 @@ import java.io.Serializable;
 @Table(name = "Gestore della Piattaforma")
 public class Gestore implements Utente, Serializable {
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
     @Column(name="nome")
     private String nome;
+    @Id
     @Column(name="email")
     private String email;
     @Column(name="password")
@@ -55,7 +53,6 @@ public class Gestore implements Utente, Serializable {
     @Override
     public String toString() {
         return "Gestore{" +
-                "id=" + id +
                 ", nome='" + nome + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
