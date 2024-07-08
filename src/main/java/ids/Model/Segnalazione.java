@@ -2,9 +2,6 @@ package ids.Model;
 
 import jakarta.persistence.*;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @Entity
 @Table(name = "Segnalazioni")
 public class Segnalazione {

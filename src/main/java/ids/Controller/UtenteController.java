@@ -26,9 +26,19 @@ public class UtenteController {
         return sRep.listaTuristi();
     }
 
+    @GetMapping("/listaTuristiAutorizzati")
+    public ResponseEntity<List<TuristaAutorizzato>> listaTuristiAutorizzati(){
+        return sRep.listaTuristiAutorizzati();
+    }
+
     @GetMapping("/listaContributor")
     public ResponseEntity<List<Contributor>> listaContributor(){
         return sRep.listaContributor();
+    }
+
+    @GetMapping("/listaContributorAutorizzati")
+    public ResponseEntity<List<ContributorAutorizzato>> listaContributorAutorizzati(){
+        return sRep.listaContributorAutorizzati();
     }
 
     @GetMapping("/ricercaTuristaConMail/{e}")
@@ -36,14 +46,24 @@ public class UtenteController {
         return sRep.ricercaTuristaConMail(e);
     }
 
+    @GetMapping("/ricercaTuristaAutorizzatoConMail/{e}")
+    public ResponseEntity<TuristaAutorizzato> ricercaTuristaAutorizzatoConMail(@PathVariable String e){
+        return sRep.ricercaTuristaAutorizzatoConMail(e);
+    }
+
     @GetMapping("/ricercaContributorConMail/{e}")
     public ResponseEntity<Contributor> ricercaContributorConMail(@PathVariable String e){
         return sRep.ricercaContributorConMail(e);
     }
 
-    @PostMapping("/addUtente")
+    @GetMapping("/ricercaContributorAutorizzatoConMail/{e}")
+    public ResponseEntity<ContributorAutorizzato> ricercaContributorAutorizzatoConMail(@PathVariable String e){
+        return sRep.ricercaContributorAutorizzatoConMail(e);
+    }
+
+    @PostMapping("/aggiungiUtente")
     public ResponseEntity<String> addUtente(@RequestParam String tipo, @RequestParam String n, @RequestParam String e, @RequestParam String p){
-        boolean result = sRep.addUtente(tipo,n,e,p);
+        boolean result = sRep.aggiunigUtente(tipo,n,e,p);
         if(result){
             return new ResponseEntity<>("Aggiunto!",HttpStatus.OK);
         } else {
@@ -99,9 +119,9 @@ public class UtenteController {
         return mRep.listaItinerari();
     }
 
-    @PostMapping("/addSegnalazione")
-    public ResponseEntity<String> addSegnalazione(@RequestBody Segnalazione segnalazione){
-        boolean result = sRep.addSegnalazione(segnalazione);
+    @PostMapping("/ggiungiSegnalazione")
+    public ResponseEntity<String> aggiungiSegnalazione(@RequestBody Segnalazione segnalazione){
+        boolean result = sRep.aggiungiSegnalazione(segnalazione);
         if(result){
             return new ResponseEntity<>("Aggiunto!",HttpStatus.OK);
         } else {

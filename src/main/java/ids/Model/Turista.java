@@ -88,7 +88,8 @@ public class Turista implements Utente, Serializable {
         return segnalazioni;
     }
 
-    public void setSegnalaziones(Set<Segnalazione> segnalazioni) {
+    public void setSegnalazioni(Set<Segnalazione> segnalazioni) {
         this.segnalazioni = segnalazioni;
     }
+
 }

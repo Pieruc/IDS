@@ -28,6 +28,9 @@ public class AdminServiziImplementazione implements AdminServizi{
     @Autowired
     TuristaAutorizzatoRepository tARep;
 
+    @Autowired
+    UtenteServiziImplementazione uRep;
+
     @Override
     public void creaContest(Contest contest) {
         coRep.save(contest);
@@ -74,13 +77,13 @@ public class AdminServiziImplementazione implements AdminServizi{
 
     @Override
     public void modificaRuolo(Turista t) {
-        tRep.delete(tRep.findById(t.getEmail()).orElseThrow(()-> new RuntimeException("Turista non trovato")));
-        TuristaAutorizzato tA = new TuristaAutorizzato(t.getNome(),t.getEmail(),t.getPassword());
+        TuristaAutorizzato tA = new TuristaAutorizzato(t.getNome(), t.getEmail(), t.getPassword());
         tARep.save(tA);
     }
 
     @Override
     public void modificaRuolo(Contributor c) {
-
+        ContributorAutorizzato cA = new ContributorAutorizzato(c.getNome(), c.getEmail(), c.getPassword());
+        cARep.save(cA);
     }
 }

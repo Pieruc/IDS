@@ -38,6 +38,9 @@ public class UtenteServiziImplementazione implements UtenteServizi {
     @Autowired
     ContributorAutorizzatoRepository cARep;
 
+    @Autowired
+    PrenotazioneRepository pREp;
+
     @Override
     public void save(Turista t) {
         tRep.save(t);
@@ -49,6 +52,16 @@ public class UtenteServiziImplementazione implements UtenteServizi {
     }
 
     @Override
+    public void save(TuristaAutorizzato tA){
+        tARep.save(tA);
+    }
+
+    @Override
+    public void save(ContributorAutorizzato cA){
+        cARep.save(cA);
+    }
+
+    @Override
     public void save(Segnalazione s) {
         sRep.save(s);
     }
@@ -57,6 +70,19 @@ public class UtenteServiziImplementazione implements UtenteServizi {
     public ResponseEntity<List<Turista>> listaTuristi() {
         try{
             List<Turista> list = new ArrayList<>(tRep.findAll());
+            if(list.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(list,HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseEntity<List<TuristaAutorizzato>> listaTuristiAutorizzati() {
+        try{
+            List<TuristaAutorizzato> list = new ArrayList<>(tARep.findAll());
             if(list.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
@@ -79,6 +105,20 @@ public class UtenteServiziImplementazione implements UtenteServizi {
         }
     }
 
+    @Override
+    public ResponseEntity<List<ContributorAutorizzato>> listaContributorAutorizzati() {
+        try{
+            List<ContributorAutorizzato> list = new ArrayList<>(cARep.findAll());
+            if(list.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(list,HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
     public ResponseEntity<Turista> ricercaTuristaConMail(String e){
         Optional<Turista> t = tRep.findById(e);
         return t.map(
@@ -86,6 +126,15 @@ public class UtenteServiziImplementazione implements UtenteServizi {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @Override
+    public ResponseEntity<TuristaAutorizzato> ricercaTuristaAutorizzatoConMail(String e){
+        Optional<TuristaAutorizzato> tA = tARep.findById(e);
+        return tA.map(
+                        turistaAutorizzato -> new ResponseEntity<>(turistaAutorizzato, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @Override
     public ResponseEntity<Contributor> ricercaContributorConMail(String e){
         Optional<Contributor> c = cRep.findById(e);
         return c.map(
@@ -94,7 +143,15 @@ public class UtenteServiziImplementazione implements UtenteServizi {
     }
 
     @Override
-    public boolean addUtente(String tipo, String n, String e, String p) {
+    public ResponseEntity<ContributorAutorizzato> ricercaContributorAutorizzatoConMail(String e){
+        Optional<ContributorAutorizzato> cA = cARep.findById(e);
+        return cA.map(
+                        contributorAutorizzato -> new ResponseEntity<>(contributorAutorizzato, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @Override
+    public boolean aggiunigUtente(String tipo, String n, String e, String p) {
         try {
             UtenteFactory factory = new UtenteFactory();
             Utente u = factory.getUtente(tipo, n, e, p);
@@ -124,6 +181,7 @@ public class UtenteServiziImplementazione implements UtenteServizi {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
     @Override
     public ResponseEntity<Contributor> aggiornaContributorConMail(String nome, String email, String password) {
         Optional<Contributor> vecchio = cRep.findById(email);
@@ -156,12 +214,40 @@ public class UtenteServiziImplementazione implements UtenteServizi {
 
     @Override
     public void eliminaTurista(Turista t) {
+        for(Itinerario i : t.getItinerari()){
+            if(i.getProprietario().equals(t)){
+                iRep.delete(i);
+            }
+        }
+        for(Contest c : t.getPartecipazioni()){
+            if(c.getcPartecipanti().equals(t)){
+                coRep.delete(c);
+            }
+        }
+        for(Segnalazione s : t.getSegnalazioni()){
+            if(s.getAutore().equals(t)){
+                sRep.delete(s);
+            }
+        }
         tRep.delete(t);
+        if(tARep.findById(t.getEmail()).isPresent()){
+            TuristaAutorizzato tA = new TuristaAutorizzato(t.getNome(), t.getEmail(), t.getPassword());
+            tARep.delete(tA);
+        }
     }
 
     @Override
     public void eliminaContributor(Contributor c) {
+        for(Contest p : c.getPartecipazioni()){
+            if(p.getcPartecipanti().equals(c)){
+                coRep.delete(p);
+            }
+        }
         cRep.delete(c);
+        if(cARep.findById(c.getEmail()).isPresent()){
+            ContributorAutorizzato cA = new ContributorAutorizzato(c.getNome(), c.getEmail(), c.getPassword());
+            cARep.delete(cA);
+        }
     }
 
     @Override
@@ -186,7 +272,7 @@ public class UtenteServiziImplementazione implements UtenteServizi {
         if(tipo.equalsIgnoreCase("turista")){
             Turista temp = tRep.findById(email).orElse(null);
             if(temp == null){
-                addUtente(tipo,nome,email,password);
+                aggiunigUtente(tipo,nome,email,password);
                 return true;
             } else {
                 return false;
@@ -195,7 +281,7 @@ public class UtenteServiziImplementazione implements UtenteServizi {
         if(tipo.equalsIgnoreCase("contributor")){
             Contributor temp = cRep.findById(email).orElse(null);
             if(temp == null){
-                addUtente(tipo,nome,email,password);
+                aggiunigUtente(tipo,nome,email,password);
                 return true;
             } else {
                 return false;
@@ -209,7 +295,7 @@ public class UtenteServiziImplementazione implements UtenteServizi {
     }
 
     @Override
-    public boolean addSegnalazione(Segnalazione segnalazione){
+    public boolean aggiungiSegnalazione(Segnalazione segnalazione){
         try {
             sRep.save(segnalazione);
             return true;
@@ -241,6 +327,8 @@ public class UtenteServiziImplementazione implements UtenteServizi {
 
     @Override
     public void eliminaSegnalazione(Segnalazione segnalazione){
+        segnalazione.getAutore().getSegnalazioni().remove(segnalazione);
+        segnalazione.getLuogo().getSegnalazioni().remove(segnalazione);
         sRep.delete(segnalazione);
     }
 
@@ -279,5 +367,12 @@ public class UtenteServiziImplementazione implements UtenteServizi {
             }
         }
         return null;
+    }
+
+    @Override
+    public boolean creaPrenotazione(){
+        Prenotazione p = new Prenotazione();
+        pREp.save(p);
+        return true;
     }
 }
