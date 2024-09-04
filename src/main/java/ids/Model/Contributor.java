@@ -75,15 +75,6 @@ public class Contributor implements Utente, Serializable {
         partecipazioni.remove(contest);
         contest.getcPartecipanti().remove(this);
     }
-    public boolean caricaContenuto() {
-
-        Object content = new Object();
-        Luogo luogo = new Luogo();
-
-        Contenuto contenuto = new Contenuto(this, content, luogo);
-
-        return false;
-    }
 
     public void modificaRuolo() {
 

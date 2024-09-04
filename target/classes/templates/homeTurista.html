@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Homepage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        a {
+            display: block;
+            margin-bottom: 10px;
+            text-decoration: none;
+            color: #0056b3;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        a:hover {
+            color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<h1>Benvenuto nella piattaforma del comune di Camerino!</h1>
+<a th:href="@{/turista/map}">Vai alla Mappa</a>
+<a th:href="@{/creaItinerario}">Crea un Itinerario</a>
+<a th:href="@{/turista/contest}">Partecipa ad un Contest</a>
+</body>
+</html>

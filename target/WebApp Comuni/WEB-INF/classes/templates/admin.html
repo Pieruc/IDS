@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Homepage Admin</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        a {
+            display: block;
+            margin-bottom: 10px;
+            text-decoration: none;
+            color: #007bff;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        a:hover {
+            color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<h1>Benvenuto nella tua applicazione!</h1>
+<a th:href="@{/admin/map}">Vai alla Mappa per gli Admin</a>
+<a th:href="@{/admin/listaTuristi}">Lista Turisti</a>
+<a th:href="@{/admin/listaTuristiAutorizzati}">Lista Turisti Autorizzati</a>
+<a th:href="@{/admin/listaContributor}">Lista Contributor</a>
+<a th:href="@{/admin/listaContributorAutorizzati}">Lista Contributor Autorizzati</a>
+<a th:href="@{/admin/modificaRuolo}">Modifica Ruoli</a>
+<a th:href="@{/admin/creaContest}">Crea Contest</a>
+</body>
+</html>

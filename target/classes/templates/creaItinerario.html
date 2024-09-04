@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Crea Itinerario</title>
+    <style>
+        #homeButton:hover {
+            background-color: #45a049;
+        }
+        #homeButtonContainer {
+            text-align: center;
+            margin-top: 20px;
+        }
+        #homeButton {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #homeButton:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<h1>Seleziona i luoghi per il tuo itinerario</h1>
+<div id="homeButtonContainer">
+    <button id="homeButton" onclick="location.href='/IDS/turista/'">Torna alla Home</button>
+</div>
+<form action="/IDS/creaItinerario" method="post">
+    <ul>
+        <li th:each="luogo : ${luoghi}">
+            <input type="checkbox" th:value="${luogo.getTitle()}" th:name="luoghi" />
+            <span th:text="${luogo.getTitle()}"></span> - <span th:text="${luogo.getDescription()}"></span>
+        </li>
+        <div><label for="nome">Nome dell'Itinerario:</label>
+            <input type="text" id="nome" name="nome" required>
+        </div>
+        <div>
+            <label for="email">Inserisci la tua email:</label>
+            <input type="text" id="email" name="email" required>
+        </div>
+    </ul>
+    <button type="submit">Crea Itinerario</button>
+</form>
+</body>
+</html>

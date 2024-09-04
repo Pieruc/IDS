@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Invia una Segnalazione</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        form {
+            max-width: 600px;
+            margin: auto;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        textarea {
+            resize: vertical;
+            height: 150px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Crea Contest</h1>
+
+<form id="contestForm" action="/IDS/admin/creaContest" method="post">
+
+    <label for="titolo">Aggiungi un nome al Contest:</label>
+    <input type="text" id="titolo" name="titolo" required>
+
+    <label for="esclusivita">Esclusività:</label>
+    <input type="checkbox" id="esclusivita" name="esclusivita" required>
+
+    <label for="descrizione">Descrizione:</label>
+    <input type="text" id="descrizione" name="descrizione" required>
+
+    <button type="submit">Crea il contest</button>
+</form>
+
+</body>
+</html>

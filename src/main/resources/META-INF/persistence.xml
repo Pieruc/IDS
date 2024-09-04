@@ -4,7 +4,7 @@
 
         <class>ids.Model.Turista</class>
         <class>ids.Model.Contributor</class>
-        <class>ids.Model.Marker</class>
+        <class>ids.Model.Contenuto</class>
         <class>ids.Model.Itinerario</class>
         <class>ids.Model.Luogo</class>
         <class>ids.Model.Segnalazione</class>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista Turisti Autorizzati</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+<h1>Lista dei Turisti Autorizzati</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>Password</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="turistaAutorizzato : ${turistiAutorizzati}">
+        <td th:text="${turistaAutorizzato.nome}">Nome</td>
+        <td th:text="${turistaAutorizzato.email}">Email</td>
+        <td th:text="${turistaAutorizzato.password}">password</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

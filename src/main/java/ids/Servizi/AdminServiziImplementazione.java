@@ -3,11 +3,8 @@ package ids.Servizi;
 import ids.Model.*;
 import ids.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -58,16 +55,8 @@ public class AdminServiziImplementazione implements AdminServizi{
     }
 
     @Override
-    public ResponseEntity<List<Contest>> listaContest() {
-        try{
-            List<Contest> listaContest = new ArrayList<>(coRep.findAll());
-            if(listaContest.isEmpty()){
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            return new ResponseEntity<>(listaContest,HttpStatus.OK);
-        } catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public List<Contest> listaContest(){
+        return coRep.findAll();
     }
 
     @Override
@@ -77,13 +66,17 @@ public class AdminServiziImplementazione implements AdminServizi{
 
     @Override
     public void modificaRuolo(Turista t) {
-        TuristaAutorizzato tA = new TuristaAutorizzato(t.getNome(), t.getEmail(), t.getPassword());
-        tARep.save(tA);
+        if(tARep.findById(t.getEmail()).isEmpty()){
+            TuristaAutorizzato tA = new TuristaAutorizzato(t.getNome(), t.getEmail(), t.getPassword());
+            tARep.save(tA);
+        }
     }
 
     @Override
     public void modificaRuolo(Contributor c) {
-        ContributorAutorizzato cA = new ContributorAutorizzato(c.getNome(), c.getEmail(), c.getPassword());
-        cARep.save(cA);
+        if(cARep.findById(c.getEmail()).isEmpty()){
+            ContributorAutorizzato cA = new ContributorAutorizzato(c.getNome(), c.getEmail(), c.getPassword());
+            cARep.save(cA);
+        }
     }
 }

@@ -2,6 +2,7 @@ package ids.Model;
 
 import jakarta.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -12,7 +13,7 @@ public class Itinerario {
     private String nome;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="Luoghi")
-    private Set<Luogo> percorso = new HashSet<>();
+    private List<Contenuto> percorso;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="proprietario", referencedColumnName = "Email")
     private Turista proprietario;
@@ -21,16 +22,17 @@ public class Itinerario {
 
     }
 
-    public Itinerario(String nome, Turista turista){
+    public Itinerario(String nome, Turista turista, List<Contenuto> luoghi){
         this.nome=nome;
         proprietario = turista;
+        percorso = luoghi;
     }
 
     public String getNome() {
         return nome;
     }
 
-    public Set<Luogo> getPercorso() {
+    public List<Contenuto> getPercorso() {
         return percorso;
     }
 
@@ -42,11 +44,15 @@ public class Itinerario {
         this.nome = nome;
     }
 
-    public void addLuogo(Luogo luogo) {
+    public List<Contenuto> getLuogo(){
+        return this.percorso;
+    }
+
+    public void addLuogo(Contenuto luogo) {
         this.percorso.add(luogo);
     }
 
-    public void removeLuogo(Luogo luogo) {
+    public void removeLuogo(Contenuto luogo) {
         this.percorso.remove(luogo);
     }
 

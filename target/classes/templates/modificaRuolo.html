@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        #homeButton:hover {
+            background-color: #45a049;
+        }
+        #homeButtonContainer {
+            text-align: center;
+            margin-top: 20px;
+        }
+        #homeButton {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #homeButton:hover {
+            background-color: #45a049;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <title>Modifica Ruolo</title>
+</head>
+<body>
+<h1>Modifica Ruolo</h1>
+<div id="homeButtonContainer">
+    <button id="homeButton" onclick="location.href='/IDS/admin/'">Torna alla Home</button>
+</div>
+<form th:action="@{/admin/modificaRuolo}" method="post">
+    <div>
+        <label>email:</label>
+        <input type="text" name="email"/>
+    </div>
+    <button type="submit">Modifica</button>
+</form>
+</body>
+</html>

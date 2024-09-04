@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mappa Interattiva Comune</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        #map { height: 600px; width: 100%; }
+        .leaflet-popup-content-wrapper { width: 300px; }
+        #segnalazioneButtonContainer {
+            text-align: center;
+            margin-top: 20px;
+        }
+        #segnalazioneButton {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #segnalazioneButton:hover {
+            background-color: #45a049;
+        }
+        #homeButton:hover {
+            background-color: #45a049;
+        }
+        #homeButtonContainer {
+            text-align: center;
+            margin-top: 20px;
+        }
+        #homeButton {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #homeButton:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<h1>Mappa Interattiva Camerino</h1>
+<div id="map"></div>
+<div id="homeButtonContainer">
+    <button id="homeButton" onclick="location.href='/IDS/turista/'">Torna alla Home</button>
+</div>
+<div id="segnalazioneButtonContainer">
+    <button id="segnalazioneButton" onclick="location.href='/IDS/segnalazione'">Invia una Segnalazione</button>
+</div>
+<script>
+    var map = L.map('map').setView([43.1465, 13.068], 14);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    function caricaContenuti() {
+        $.getJSON('/IDS/getAllContenuti', function(data) {
+            console.log(data);  // Aggiungi questo per vedere cosa viene restituito
+            data.forEach(function(contenuto) {
+                aggiungiContenutoAllaMappa(contenuto.latitude, contenuto.longitude, contenuto.title, contenuto.description, contenuto.imageUrl);
+            });
+        });
+    }
+
+    function aggiungiContenutoAllaMappa(lat, lng, title, description, imageUrl) {
+        var popupContent = '<b>' + title + '</b><br>' + description;
+        if (imageUrl) {
+            popupContent += '<br><img src="' + imageUrl + '" alt="Image" style="width:250px;height:auto;">';
+        }
+
+        const contenuto = L.marker([lat, lng]).addTo(map)
+            .bindPopup(popupContent);
+
+        contenuto.on('popupopen', function() {
+            $('#' + buttonId).on('click', function(event) {
+                event.stopPropagation();
+                deleteContenuto(title, this);
+            });
+        });
+    }
+
+    $(document).ready(function() {
+        caricaContenuti();
+    });
+</script>
+</body>
+</html>

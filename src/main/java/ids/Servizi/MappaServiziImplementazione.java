@@ -1,11 +1,9 @@
 package ids.Servizi;
 
-import ids.Model.Itinerario;
-import ids.Model.Luogo;
-import ids.Model.Marker;
+import ids.Model.*;
 import ids.Repository.ItinerarioRepository;
-import ids.Repository.LuogoRepository;
-import ids.Repository.MarkerRepository;
+import ids.Repository.ContenutoRepository;
+import ids.Repository.SegnalazioneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,118 +17,57 @@ import java.util.Optional;
 public class MappaServiziImplementazione implements MappaServizi {
 
     @Autowired
-    MarkerRepository mRep;
+    ContenutoRepository cRep;
 
     @Autowired
     ItinerarioRepository iRep;
 
     @Autowired
-    LuogoRepository lRep;
+    SegnalazioneRepository sRep;
 
     @Override
-    public void save(Marker m) {
-        mRep.save(m);
+    public void save(Contenuto m) {
+        cRep.save(m);
     }
 
     @Override
-    public ResponseEntity<List<Marker>> listaMarker() {
-        try{
-            List<Marker> list = new ArrayList<>(mRep.findAll());
-            if(list.isEmpty()){
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            return new ResponseEntity<>(list,HttpStatus.OK);
-        } catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public List<Contenuto> getAllContenuti() {
+        return cRep.findAll();
     }
 
     @Override
-    public ResponseEntity<Marker> ricercaMarkerConId(int id) {
-        Optional<Marker> m = mRep.findById(id);
-        return m.map(
-                        marker -> new ResponseEntity<>(marker, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
-    @Override
-    public boolean addMarker(double lat, double lon, String title, String description, String imageUrl) {
-        try{
-            Marker marker = new Marker(lat, lon, title, description, imageUrl);
-            mRep.save(marker);
+    public boolean aggiungiContenuto(double lat, double lon, String title, String description, String imageUrl) {
+        try {
+            Contenuto contenuto = new Contenuto(lat, lon, title, description, imageUrl);
+            cRep.save(contenuto);
             return true;
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             return false;
         }
     }
 
     @Override
-    public Marker trovaMarkerConId(int id){
-        if(mRep.findById(id).isPresent()){
-            return mRep.findById(id).get();
+    public Contenuto trovaContenutoConTitolo(String titolo) {
+        if (cRep.findById(titolo).isPresent()) {
+            return cRep.findById(titolo).get();
         } else {
             return null;
         }
     }
 
     @Override
-    public ResponseEntity<Marker> aggiornaMarkerConId(int id, double lat, double lon, String title, String description, String imageUrl) {
-        Optional<Marker> marker = mRep.findById(id);
-        if(marker.isPresent()){
-            Marker temp =  marker.get();
-            temp.setLatitude(lat);
-            temp.setLongitude(lon);
-            temp.setTitle(title);
-            temp.setDescription(description);
-            temp.setImageUrl(imageUrl);
-            Marker mod = mRep.save(temp);
-            return new ResponseEntity<>(mod,HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    @Override
-    public void eliminaMarker(Marker m) {
-        mRep.delete(m);
-    }
-
-    @Override
-    public ResponseEntity<List<Luogo>> listaLuoghi() {
-        try {
-            List<Luogo> luoghi = new ArrayList<>(lRep.findAll());
-            if(luoghi.isEmpty()){
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public void eliminaContenuto(Contenuto m) {
+        m.getSegnalazioni().removeAll(m.getSegnalazioni());
+        for (Segnalazione s : sRep.findAll()) {
+            if (s.getLuogo().equals(m)) {
+                sRep.delete(s);
             }
-            return new ResponseEntity<>(luoghi,HttpStatus.OK);
-        } catch (Exception ex){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
-
-    @Override
-    public ResponseEntity<List<Itinerario>> listaItinerari() {
-        try{
-            List<Itinerario> lista = new ArrayList<>(iRep.findAll());
-            if(lista.isEmpty()){
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        for (Itinerario i : iRep.findAll()) {
+            if (i.getLuogo().contains(m)) {
+                i.removeLuogo(m);
             }
-            return new ResponseEntity<>(lista,HttpStatus.OK);
-        } catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
-
-    @Override
-    public Itinerario addLuogo(Luogo luogo, String nome) {
-        Itinerario it = iRep.findById(nome).orElseThrow(() -> new RuntimeException("Itinerario non trovato"));
-        it.addLuogo(luogo);
-        return iRep.save(it);
-    }
-
-    @Override
-    public Luogo creaLuogo(String nome, double latitudine, double longitudine) {
-        Luogo nuovo = new Luogo(nome,latitudine,longitudine);
-        return lRep.save(nuovo);
+        cRep.delete(m);
     }
 }

@@ -9,22 +9,22 @@ public class Segnalazione {
     @Id
     @Column(name = "Titolo")
     private String titolo;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name="Autore", nullable = false)
     private Turista autore;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name="Luogo", nullable = false)
-    private Luogo luogo;
-    @Column(name="Messaggio", nullable = false)
+    private Contenuto luogo;
+    @Column(name="Messaggio")
     private String messaggio;
-    @Column(name="stato")
+    @Column(name="Stato")
     private boolean stato;
 
     public Segnalazione(){
 
     }
 
-    public Segnalazione(String titolo, Turista turista, Luogo luogo, String messaggio){
+    public Segnalazione(String titolo, Turista turista, Contenuto luogo, String messaggio){
         this.titolo = titolo;
         this.autore = turista;
         this.luogo = luogo;
@@ -64,11 +64,12 @@ public class Segnalazione {
         this.autore = autore;
     }
 
-    public Luogo getLuogo() {
+    public Contenuto getLuogo() {
         return luogo;
     }
 
-    public void setLuogo(Luogo luogo) {
+    public void setLuogo(Contenuto luogo) {
         this.luogo = luogo;
     }
+
 }

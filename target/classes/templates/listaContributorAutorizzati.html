@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista Contributor Autorizzati</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        #homeButton:hover {
+            background-color: #45a049;
+        }
+        #homeButtonContainer {
+            text-align: center;
+            margin-top: 20px;
+        }
+        #homeButton {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #homeButton:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<h1>Lista dei Contributor Autorizzati</h1>
+<div id="homeButtonContainer">
+    <button id="homeButton" onclick="location.href='/IDS/admin/'">Torna alla Home</button>
+</div>
+<table>
+    <thead>
+    <tr>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>Password</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="contributorAutorizzato : ${contributorAutorizzati}">
+        <td th:text="${contributorAutorizzato.nome}">Nome</td>
+        <td th:text="${contributorAutorizzato.email}">Email</td>
+        <td th:text="${contributorAutorizzato.password}">password</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

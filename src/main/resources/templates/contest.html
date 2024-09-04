@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style>
+        #homeButton:hover {
+            background-color: #45a049;
+        }
+        #homeButtonContainer {
+            text-align: center;
+            margin-top: 20px;
+        }
+        #homeButton {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #homeButton:hover {
+            background-color: #45a049;
+        }
+    </style>
+    <title>Contest List</title>
+</head>
+<body>
+
+<h1>Contest attivi</h1>
+<div id="homeButtonContainer">
+    <button id="homeButton" onclick="location.href='/IDS/'">Torna alla Home</button>
+</div>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Titolo</th>
+        <th>Descrizione</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="contest : ${contests}">
+        <td th:text="${contest.titolo}">Nome</td>
+        <td th:text="${contest.descrizione}">Descrizione</td>
+        <td>
+            <form th:action="@{/turista/contest}" method="post">
+                <input type="hidden" th:name="titolo" th:value="${contest.titolo}"/>
+                <label for="email">Email:</label>
+                <input type="text" id="email" name="email" required>
+                <button type="submit">Participa</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

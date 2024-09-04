@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -21,13 +22,13 @@ public class Turista implements Utente, Serializable {
     private String password;
     @JsonIgnore
     @OneToMany(mappedBy = "proprietario")
-    private Set<Itinerario> itinerari = new HashSet<>();
+    private List<Itinerario> itinerari;
     @JsonIgnore
     @OneToMany(mappedBy = "autore")
-    private Set<Segnalazione> segnalazioni = new HashSet<>();
+    private List<Segnalazione> segnalazioni;
     @JsonIgnore
     @ManyToMany(mappedBy = "tPartecipanti")
-    private Set<Contest> partecipazioni = new HashSet<>();
+    private List<Contest> partecipazioni;
 
     public Turista(){
 
@@ -62,7 +63,7 @@ public class Turista implements Utente, Serializable {
         this.password = password;
     }
 
-    public Set<Itinerario> getItinerari() {
+    public List<Itinerario> getItinerari() {
         return itinerari;
     }
 
@@ -75,7 +76,7 @@ public class Turista implements Utente, Serializable {
                 '}';
     }
 
-    public Set<Contest> getPartecipazioni(){
+    public List<Contest> getPartecipazioni(){
         return partecipazioni;
     }
 
@@ -84,12 +85,11 @@ public class Turista implements Utente, Serializable {
         System.out.println("Turista creato!");
     }
 
-    public Set<Segnalazione> getSegnalazioni() {
-        return segnalazioni;
+    public void addSegnalazione(Segnalazione s){
+        this.segnalazioni.add(s);
     }
 
-    public void setSegnalazioni(Set<Segnalazione> segnalazioni) {
-        this.segnalazioni = segnalazioni;
+    public void removeSegnalazione(Segnalazione s){
+        this.segnalazioni.remove(s);
     }
-
 }

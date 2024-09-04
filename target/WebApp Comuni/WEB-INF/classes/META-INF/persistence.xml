@@ -2,8 +2,15 @@
     <persistence-unit name="ids.pu" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
-        <class>ids.model.Turista</class>
-        <class>ids.model.Contributor</class>
+        <class>ids.Model.Turista</class>
+        <class>ids.Model.Contributor</class>
+        <class>ids.Model.Contenuto</class>
+        <class>ids.Model.Itinerario</class>
+        <class>ids.Model.Luogo</class>
+        <class>ids.Model.Segnalazione</class>
+        <class>ids.Model.Contest</class>
+        <class>ids.Model.TuristaAutorizzato</class>
+        <class>ids.Model.ContributorAutorizzato</class>
 
         <properties>
             <property name="jakarta.persistence.jdbc.url" value="jdbc:h2:~/test"/>
@@ -15,7 +22,6 @@
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
-
         </properties>
     </persistence-unit>
 </persistence>
