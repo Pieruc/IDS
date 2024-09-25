@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Partecipanti Contest</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<h1>Partecipanti del Contest: <span th:text="${titolo}">Titolo Contest</span></h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>Seleziona Vincitore</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="utente : ${utenti}">
+        <td th:text="${utente.nome}">Nome</td>
+        <td th:text="${utente.email}">Email</td>
+        <td>
+            <form th:action="@{/admin/selezionaVincitore}" method="post">
+                <input type="hidden" name="titolo" th:value="${titolo}"/>
+                <input type="hidden" name="vincitore" th:value="${utente.nome}"/>
+                <button type="submit">Seleziona come Vincitore</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

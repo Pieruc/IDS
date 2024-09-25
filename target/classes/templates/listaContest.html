@@ -20,9 +20,9 @@
         tr:nth-child(even) {
             background-color: #f9f9f9;
         }
-         #homeButton:hover {
-             background-color: #45a049;
-         }
+        #homeButton:hover {
+            background-color: #45a049;
+        }
         #homeButtonContainer {
             text-align: center;
             margin-top: 20px;
@@ -51,6 +51,7 @@
         <th>Titolo</th>
         <th>Esclusività</th>
         <th>Descrizione</th>
+        <th>Partecipanti</th>
         <th>Chiudi Contest</th>
     </tr>
     </thead>
@@ -59,6 +60,12 @@
         <td th:text="${contest.titolo}">Titolo</td>
         <td th:text="${contest.esclusivita ? 'Sì' : 'No'}">Esclusività</td>
         <td th:text="${contest.descrizione}">Descrizione</td>
+        <td>
+            <form th:action="@{/admin/listaPartecipanti}" method="get">
+                <input type="hidden" name="titolo" th:value="${contest.titolo}"/>
+                <button type="submit">Visualizza Partecipanti</button>
+            </form>
+        </td>
         <td>
             <form th:action="@{/admin/chiudiContest}" method="post">
                 <input type="hidden" name="titolo" th:value="${contest.titolo}"/>

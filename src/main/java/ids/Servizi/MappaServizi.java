@@ -1,7 +1,6 @@
 package ids.Servizi;
 
 import ids.Model.*;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 

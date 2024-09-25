@@ -37,10 +37,22 @@ public class TuristaController {
         return "mapTurista";
     }
 
-    @GetMapping("/getAllContenuti")
-    @ResponseBody
-    public List<Contenuto> getAllContenuto() {
-        return mSer.getAllContenuti();
+    @GetMapping("/itinerari")
+    public String itinerario(){
+        return "itinerari";
+    }
+
+    @GetMapping("/listaItinerari")
+    public String listaItinerari(@RequestParam("email") String email, Model model){
+        if(tRep.findById(email).isPresent()){
+            List<Itinerario> itinerari = tRep.findById(email).get().getItinerari();
+            model.addAttribute("email", email);
+            model.addAttribute("itinerari", itinerari);
+
+            return "listaItinerari";
+        }
+
+        return "redirect:/homeTurista/";
     }
 
     @GetMapping("/contest")

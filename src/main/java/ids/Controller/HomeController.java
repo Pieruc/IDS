@@ -155,4 +155,14 @@ public class HomeController {
         }
     }
 
+    @GetMapping("cancellaAccount")
+    public String cancellaAccount(){
+        return "/cancellaAccount";
+    }
+
+    @PostMapping("cancellaAccount")
+    public String cancellaAccount(@RequestParam String email){
+        uSer.eliminaAccount(email);
+        return "redirect:/login";
+    }
 }

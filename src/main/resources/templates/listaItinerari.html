@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista Itinerari</title>
+</head>
+<body>
+
+<div class="container">
+    <h1>Lista degli Itinerari per <span th:text="${email}"></span></h1>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Nome Itinerario</th>
+            <th>Contenuti</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="itinerario : ${itinerari}">
+            <td th:text="${itinerario.nome}">Nome Itinerario</td>
+            <td>
+                <ul class="contenuti-list">
+                    <li th:each="contenuto : ${itinerario.percorso}" th:text="${contenuto.title}">Nome Contenuto</li>
+                </ul>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <button onclick="location.href='/IDS/admin/'">Torna alla Home</button>
+</div>
+
+</body>
+</html>

@@ -3,14 +3,8 @@ package ids.Servizi;
 import ids.Model.*;
 import ids.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.support.StandardServletMultipartResolver;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UtenteServiziImplementazione implements UtenteServizi {
@@ -99,6 +93,14 @@ public class UtenteServiziImplementazione implements UtenteServizi {
     }
 
     @Override
+    public List<Itinerario> listaItinerarioByTurista(String email){
+        if(tRep.findById(email).isPresent()){
+            return tRep.findById(email).get().getItinerari();
+        }
+        return null;
+    }
+
+    @Override
     public List<Segnalazione> listaSegnalazioni(){
         return sRep.findAll();
     }
@@ -127,6 +129,44 @@ public class UtenteServiziImplementazione implements UtenteServizi {
                     coRep.save(contest);
                 }
             }
+        }
+    }
+
+    @Override
+    public void eliminaAccount(String email){
+        if(tRep.findById(email).isPresent()){
+            Turista t = tRep.findById(email).get();
+            for(Itinerario i: iRep.findAll()){
+                List <Contenuto> percorso = i.getPercorso();
+                if(i.getProprietario().equals(t)){
+                    iRep.delete(i);
+                }
+                mRep.saveAll(percorso);
+            }
+            for(Segnalazione s: sRep.findAll()){
+                if(s.getAutore().equals(t)){
+                    sRep.delete(s);
+                }
+            }
+            for(Contest contest: coRep.findAll()){
+                for(Turista tur : contest.gettPartecipanti()){
+                    if(tur.equals(t)){
+                        contest.removeTuristaPartecipante(t);
+                    }
+                }
+            }
+            tRep.deleteById(email);
+        }
+        if(cRep.findById(email).isPresent()){
+            Contributor c = cRep.findById(email).get();
+            for(Contest contest: coRep.findAll()){
+                for(Contributor cont : contest.getcPartecipanti()){
+                    if(cont.equals(c)){
+                        contest.removeContributorPartecipante(c);
+                    }
+                }
+            }
+            cRep.deleteById(email);
         }
     }
 

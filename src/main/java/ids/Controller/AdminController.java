@@ -125,4 +125,18 @@ public class AdminController {
         return "redirect:/map";
     }
 
+    @GetMapping("/listaPartecipanti")
+    public String listaPartecipanti(@RequestParam String titolo, Model model){
+
+        List<Utente> partecipanti = aSer.getPartecipantiByTitolo(titolo);
+        model.addAttribute("titolo", titolo);
+        model.addAttribute("utenti", partecipanti);
+        return "listaPartecipanti";
+    }
+
+    @GetMapping("selezionaVincitore")
+    public String selezionaVincitore(){
+        return "redirect:/admin/";
+    }
+
 }

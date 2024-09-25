@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Cancella Account</title>
+</head>
+<body>
+<h1>Cancella Account</h1>
+<form th:action="@{/cancellaAccount}" method="post">
+    <div>
+        <label>Inserisci la tua Email:</label>
+        <input type="text" name="email"/>
+    </div>
+    <div>
+    <button type="submit">Conferma</button>
+    </div>
+</form>
+</body>
+</html>

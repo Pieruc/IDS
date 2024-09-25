@@ -1,8 +1,8 @@
 package ids.Model;
 import jakarta.persistence.*;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Contest {
@@ -17,14 +17,14 @@ public class Contest {
             joinColumns = @JoinColumn(name="turisti_contest"),
             inverseJoinColumns = @JoinColumn(name="turisti_partecipanti")
     )
-    private Set<Turista> tPartecipanti = new HashSet<>();
+    private List<Turista> tPartecipanti= new ArrayList<>();
     @ManyToMany
     @JoinTable(
             name="contest_contributor",
             joinColumns = @JoinColumn(name="contributor_contest"),
             inverseJoinColumns = @JoinColumn(name = "contributor_partecipanti")
     )
-    private Set<Contributor> cPartecipanti = new HashSet<>();
+    private List<Contributor> cPartecipanti = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
@@ -32,7 +32,7 @@ public class Contest {
             joinColumns = @JoinColumn(name="turista_autorizzati_contest"),
             inverseJoinColumns = @JoinColumn(name = "turista_autorizzati_partecipanti")
     )
-    private Set<TuristaAutorizzato> tAPartecipanti = new HashSet<>();
+    private List<TuristaAutorizzato> tAPartecipanti;
 
     @ManyToMany
     @JoinTable(
@@ -40,7 +40,8 @@ public class Contest {
             joinColumns = @JoinColumn(name="contributor_autorizzati_contest"),
             inverseJoinColumns = @JoinColumn(name = "contributor_autorizzati_partecipanti")
     )
-    private Set<ContributorAutorizzato> cAPartecipanti = new HashSet<>();
+    private List<ContributorAutorizzato> cAPartecipanti = new ArrayList<>();
+
 
     public Contest() {
 
@@ -77,18 +78,27 @@ public class Contest {
         this.descrizione = descrizione;
     }
 
-    public Set<Turista> gettPartecipanti(){
+    public List<Turista> gettPartecipanti(){
         return tPartecipanti;
     }
-    public Set<Contributor> getcPartecipanti(){
+    public List<Contributor> getcPartecipanti(){
         return cPartecipanti;
     }
 
-    public Set<TuristaAutorizzato> gettAPartecipanti(){
+    public List<TuristaAutorizzato> gettAPartecipanti(){
         return tAPartecipanti;
     }
-    public Set<ContributorAutorizzato> getcAPartecipanti(){
+    public List<ContributorAutorizzato> getcAPartecipanti(){
         return cAPartecipanti;
+    }
+
+    public List<Utente> getPartecipanti(){
+        List<Utente> partecipanti= new ArrayList<>();
+        partecipanti.addAll(this.gettPartecipanti());
+        partecipanti.addAll(this.gettAPartecipanti());
+        partecipanti.addAll(this.getcPartecipanti());
+        partecipanti.addAll(this.getcAPartecipanti());
+        return partecipanti;
     }
 
     public void addTuristaPartecipante(Turista t){

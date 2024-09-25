@@ -60,6 +60,12 @@ public class AdminServiziImplementazione implements AdminServizi{
     }
 
     @Override
+    public List<Utente> getPartecipantiByTitolo(String titolo){
+        Contest contest = coRep.findById(titolo).orElseThrow(()->new RuntimeException("Contest non trovato"));
+        return contest.getPartecipanti();
+    }
+
+    @Override
     public int rimborso() {
         return 0;
     }

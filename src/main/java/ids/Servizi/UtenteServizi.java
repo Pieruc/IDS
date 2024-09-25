@@ -1,7 +1,6 @@
 package ids.Servizi;
 
 import ids.Model.*;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -16,6 +15,8 @@ public interface UtenteServizi {
     void aggiunigUtente(String tipo, String nome, String email, String password);
     Turista trovaTuristaConMail(String email);
     void creaItinerario(Turista turista,String nome, List<Contenuto> luoghi);
+    List<Itinerario> listaItinerarioByTurista(String email);
     List<Segnalazione> listaSegnalazioni();
-    public void partecipaContest(String titolo, String Email);
+    void partecipaContest(String titolo, String email);
+    void eliminaAccount(String email);
 }
